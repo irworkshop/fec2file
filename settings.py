@@ -3,12 +3,12 @@
 ELECTRONIC_ZIPFILE_MANIFEST = 'metadata/electronic_zipfiles.txt'
 
 
-ELECTRONIC_ZIPDIR = 'zip/electronic/'
+ELECTRONIC_ZIPDIR = '/data/fec/fec2file/zip/electronic/'
 
 FEC_BUCKET = 'cg-519a459a-0ea3-42c2-b7bc-fa1143481f74.s3-us-gov-west-1.amazonaws.com'
 DOWNLOAD_BASE = "https://%s/bulk-downloads/electronic/" % FEC_BUCKET
 
-RAW_ELECTRONIC_DIR = 'fecfilings/electronic/'
+RAW_ELECTRONIC_DIR = '/data/fec/fec2file/fecfilings/electronic/'
 
 HEADER_DUMP_FILE = 'headers/headers_raw.csv'
 
