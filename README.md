@@ -1,2 +1,8 @@
 # fec2file
-Build schedule-specific .csv files from the .fec files
+
+Dumps FEC form schedules to file.
+
+
+
+## processing zipfiles
+

@@ -21,7 +21,7 @@ def download_file(url, local_filename):
 
 
 if __name__ == '__main__':
-    
+
     infile = open(ELECTRONIC_ZIPFILE_MANIFEST, 'r')
     filings = []
     for raw_row in infile:
@@ -30,12 +30,9 @@ if __name__ == '__main__':
             print("'%s'" % row)
             filings.append(row)
 
-    # for testing
-    #filings = ['20180905.zip', '20180906.zip','20180907.zip']
 
-
-    for filing in filings:
+    for i, filing in enumerate(filings):
+        print(i)
         remote_url = DOWNLOAD_BASE + filing
         local_path = ELECTRONIC_ZIPDIR + filing
-        print("preparing to download %s to %s" % ( remote_url, local_path) )
-        #download_file(remote_url, local_path)
+        download_file(remote_url, local_path)
