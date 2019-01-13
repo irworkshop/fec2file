@@ -2,22 +2,28 @@ import requests
 import os
 from datetime import datetime 
 
-from settings import RAW_ELECTRONIC_DIR
-
-
-filings = ['20180905.zip', '20180906.zip','20180907.zip']
-
+from settings import *
 
 def makedir(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
+if __name__ == '__main__':
 
-for filing in filings:
-    raw_name = filing.replace(".zip", "")
-    directory_path = RAW_ELECTRONIC_DIR + raw_name
-    makedir(directory_path)
+    infile = open(ELECTRONIC_ZIPFILE_MANIFEST, 'r')
+    filings = []
+    for raw_row in infile:
+        row = raw_row.replace("\n","")
+        if row.endswith(".zip"):
+            print("'%s'" % row)
+            filings.append(row)
 
-    unzip_cmd = "unzip zip/electronic/%s -d fecfilings/electronic/%s/" % (filing, raw_name)
-    os.system(unzip_cmd)
+
+    for i, filing in enumerate(filings):
+        raw_name = filing.replace(".zip", "")
+        directory_path = RAW_ELECTRONIC_DIR + raw_name
+        makedir(directory_path)
+
+        unzip_cmd = "unzip zip/electronic/%s -d fecfilings/electronic/%s/" % (filing, raw_name)
+        os.system(unzip_cmd)
 
