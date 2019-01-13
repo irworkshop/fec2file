@@ -3,7 +3,8 @@
 import requests 
 from datetime import datetime 
 from settings import *
-
+import os.path
+ 
 
 def download_file(url, local_filename):
     start = datetime.now()
@@ -35,4 +36,7 @@ if __name__ == '__main__':
         print(i)
         remote_url = DOWNLOAD_BASE + filing
         local_path = ELECTRONIC_ZIPDIR + filing
-        download_file(remote_url, local_path)
+        if os.path.isfile(local_path):
+            print("Skipping %s file already present" % local_path)
+        else:
+            download_file(remote_url, local_path)
