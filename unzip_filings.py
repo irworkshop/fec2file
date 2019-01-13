@@ -25,6 +25,7 @@ if __name__ == '__main__':
         makedir(directory_path)
 
         unzip_cmd = "unzip %s%s -d %s%s/" % (ELECTRONIC_ZIPDIR, filing, RAW_ELECTRONIC_DIR, raw_name)
+        print(i)
         print(unzip_cmd)
         os.system(unzip_cmd)
 
