@@ -1,6 +1,7 @@
 import requests
 import json
 import csv
+from time import sleep
 
 from settings import FEC_API_KEY, API_DUMP
 
@@ -15,6 +16,7 @@ def get_writer(headers):
 
 
 if __name__ == "__main__":
+
 
     writer = None
     page_number = 0
@@ -44,4 +46,9 @@ if __name__ == "__main__":
                 writer = get_writer(headers)
             
             writer.writerow(result)
+
+        # rate limit is 1000 requests per hour
+        print("now sleeping for 3.5 seconds")
+        sleep(3.6)
+
 

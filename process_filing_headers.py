@@ -55,6 +55,10 @@ if __name__ == '__main__':
     dw = csv.DictWriter(outfile, fieldnames=MASTER_HEADER_ROW, extrasaction='ignore')
     dw.writeheader()
 
+    errorfile = open("header_read_errors.csv")
+    error_writer = csv.DictWriter(errorfile, fieldnames=ERROR_HEADERS, extrasaction='ignore')
+    error_writer.writeheader()
+
     for dirName, subdirList, fileList in os.walk(RAW_ELECTRONIC_DIR, topdown=False):
         #print('Found directory: %s' % dirName)
         for fname in fileList:

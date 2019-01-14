@@ -12,6 +12,8 @@ DOWNLOAD_BASE = "https://%s/bulk-downloads/electronic/" % FEC_BUCKET
 
 HEADER_DUMP_FILE = 'headers/headers_raw.csv'
 
+
+
 # from https://github.com/esonderegger/fecfile/blob/master/fecfile/mappings.json#L2
 
 # Not every version completes these all
@@ -35,7 +37,10 @@ MASTER_HEADER_ROW = [
     "name_delim",
 ]
 
+FEC_API_KEY = ''
+API_DUMP = 'headers/apidump.csv'
+
 try:
-    from .local_settings import *
+    from local_settings import *
 except ImportError:
     print("Error importing local_settings.py")
