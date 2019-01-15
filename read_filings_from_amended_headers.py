@@ -160,7 +160,7 @@ if __name__ == '__main__':
 
                     path_list = path + [file]
                     filepath = os.path.join(*path_list) # unpack list to args with *
-                    readfile(filepath, schedule_writer)
+                    readfile("/" + filepath, schedule_writer)
                     num_processed += 1
                     if num_processed % NOTIFY == 0:
                         print("processed = %s" % num_processed)
