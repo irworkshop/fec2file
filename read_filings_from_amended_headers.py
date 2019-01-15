@@ -70,7 +70,11 @@ def readfile(path_to_file, schedule_writer):
                 version = results[1]
 
             else:
-                parsed = fecfile.parse_line(line, version)
+                try:
+                    parsed = fecfile.parse_line(line, version)
+                except fecfile.fecparser.FecParserMissingMappingError as e:
+                    print("error in %s line %s: %s" % (filenumber, line, e))
+                    continue
                 if not parsed:
                     pass
                     #print("** not parsed %s" % line)
