@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 from settings import AMENDED_HEADER_FILE, RAW_ELECTRONIC_DIR
-from collections import Counter
+from collections import Counter, OrderedDict
 
 import fecfile
 
@@ -81,7 +81,7 @@ def readfile(path_to_file, schedule_writer):
                 else:   
                     # count the form type, if given
                     try:
-                        formtypecount.update({parsed['form_type']:1})
+                        formtypecount.update({parsed['form_type'].upper():1})
                     except KeyError:
                         continue
 
@@ -100,7 +100,7 @@ def readfile(path_to_file, schedule_writer):
                 
                 #print("%s %s" % (linecount, parsed))
 
-    #print(formtypecount)
+    return formtypecount
 
 
 if __name__ == '__main__':
@@ -108,33 +108,29 @@ if __name__ == '__main__':
 
 
 
-    build_hash = True
+    # hash the most recent filings here,
+    # we'll run through all of them and use 
+    # this to check if they should be processed 
+    live_filing_list = {}
+    start = datetime.now()
+    print("Building a hash of files to process... ")
+    reader = csv.DictReader(open(AMENDED_HEADER_FILE, 'r'))
+    count = {}
+    max = 0
+    included = 0
+    for i,row in enumerate(reader):
+        raw_form_type = row['form_type']
+        form_type = raw_form_type.rstrip('ANT')
+        max=i
 
-    if build_hash: 
-
-        # hash the most recent filings here,
-        # we'll run through all of them and use 
-        # this to check if they should be processed 
-        live_filing_list = {}
-        start = datetime.now()
-        print("Building a hash of files to process... ")
-        reader = csv.DictReader(open(AMENDED_HEADER_FILE, 'r'))
-        count = {}
-        max = 0
-        included = 0
-        for i,row in enumerate(reader):
-            raw_form_type = row['form_type']
-            form_type = raw_form_type.rstrip('ANT')
-            max=i
-
-            if form_type in main_forms and row['is_superseded'] == 'False':
-                #print("Got form to process %s %s" % (row['filing_number'], row['form_type']))
-                live_filing_list[row['filing_number']] = row['form_type']
-                included += 1
+        if form_type in main_forms and row['is_superseded'] == 'False':
+            #print("Got form to process %s %s" % (row['filing_number'], row['form_type']))
+            live_filing_list[row['filing_number']] = row['form_type']
+            included += 1
 
 
-        hash_done = datetime.now()
-        print("Read %s rows and hashed %s in %s" % (max, included, hash_done-start))
+    hash_done = datetime.now()
+    print("Read %s rows and hashed %s in %s" % (max, included, hash_done-start))
 
 
     # set up the writers
@@ -146,27 +142,61 @@ if __name__ == '__main__':
         schedule_writer[sked]['writer'].writeheader()
 
     # num processed 
-    num_processed = 0
-    NOTIFY = 100
+    
+
+    files_found = []
+
     # Walk the electronic dir and find files. 
+    print("Finding local fec files, please be patient")
+    walk_start = datetime.now()
+    filesfound = 0
     for root, dirs, files in os.walk(RAW_ELECTRONIC_DIR):
         path = root.split(os.sep)
         for file in files:
             if file.endswith(".fec"):
-                filenumber = file.split(".")[0]
-
-                if build_hash:
-                    try:
-                        live_filing_list[filenumber]
-                    except KeyError:
-                        continue
-
-
-                    path_list = path + [file]
-                    filepath = os.path.join(*path_list) # unpack list to args with *
-                    readfile("/" + filepath, schedule_writer)
-                    num_processed += 1
-                    if num_processed % NOTIFY == 0:
-                        print("processed = %s" % num_processed)
-
+                filing = int(file.split(".")[0])
+                datestring = path[-1:]
+                path_list = path + [file]
+                filepath = os.path.join(*path_list) # unpack list to args with *
                 
+                this_file = {
+                    'filepath':filepath,
+                    'filing':filing,
+                    'datestring':datestring
+                }
+                files_found.append(this_file)
+                filesfound+= 1
+
+    walk_done = datetime.now()
+    print("Filewalk completed. Found %s in %s" % (filesfound, walk_done-walk_start))
+
+    
+    files_found_sorted = sorted(files_found, key=lambda x: x['filing'])
+
+
+    num_processed = 0
+    formtypecount = Counter()
+    process_start = datetime.now()
+    NOTIFY = 100
+
+    for filingdict in files_found_sorted:
+        filenumber = filingdict['filing']
+        filepath = filingdict['filepath']
+        datestring = filingdict['datestring']
+
+        try:
+            live_filing_list[str(filenumber)]
+            #print("* Found live %s - date: %s" % (filenumber, datestring))
+        except KeyError:
+            #print("  Not live for %s" % filenumber)
+            continue
+
+        result = readfile( "/" + filepath, schedule_writer)
+        formtypecount.update(result)
+        num_processed += 1
+
+        if num_processed % NOTIFY == 0:
+
+            process_time = datetime.now() - process_start 
+            total = sum(formtypecount.values())
+            print("time %s total rows processed %s, filings processed = %s datestring %s" % (process_time, total, num_processed, datestring))
