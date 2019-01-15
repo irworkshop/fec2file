@@ -10,8 +10,13 @@ FEC_BUCKET = 'cg-519a459a-0ea3-42c2-b7bc-fa1143481f74.s3-us-gov-west-1.amazonaws
 DOWNLOAD_BASE = "https://%s/bulk-downloads/electronic/" % FEC_BUCKET
 
 
+# FIRST LINE OF HEADERs processed to this
 HEADER_DUMP_FILE = 'headers/headers_raw.csv'
+# amendments are marked in this file, created by the amend_headers script. 
+AMENDED_HEADER_FILE = 'headers/headers_amended.csv'
 
+SCHEDULE_A_OUTFILE = 'schedules/ScheduleA.csv'
+SCHEDULE_B_OUTFILE = 'schedules/ScheduleB.csv'
 
 
 # from https://github.com/esonderegger/fecfile/blob/master/fecfile/mappings.json#L2
@@ -39,6 +44,9 @@ MASTER_HEADER_ROW = [
 
 FEC_API_KEY = ''
 API_DUMP = 'headers/apidump.csv'
+
+
+
 
 try:
     from local_settings import *
