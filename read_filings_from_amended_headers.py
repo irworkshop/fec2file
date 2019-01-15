@@ -123,7 +123,7 @@ if __name__ == '__main__':
             form_type = raw_form_type.rstrip('ANT')
             max=i
 
-            if form_type in main_forms and row['is_superceded'] == 'False':
+            if form_type in main_forms and row['is_superseded'] == 'False':
                 #print("Got form to process %s %s" % (row['filing_number'], row['form_type']))
                 live_filing_list[row['filing_number']] = row['form_type']
                 included += 1

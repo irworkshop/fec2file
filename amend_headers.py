@@ -12,7 +12,7 @@ from collections import OrderedDict
 infilepath = "headers/headers1.csv"
 
 outfileheaders = ['filing_number', 'is_superseded', 'amended_by', 'last_amendment', 'report_number', 'filer_committee_id_number', 'form_type', 'date_signed', 'comment']
-outfile =  open("headers/headers_amended.csv", 'w')
+outfile =  open(AMENDED_HEADER_FILE, 'w')
 writer = csv.DictWriter(outfile, fieldnames=outfileheaders, extrasaction='ignore')
 writer.writeheader()
 
