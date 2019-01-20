@@ -58,6 +58,12 @@ MASTER_HEADER_ROW = [
     "name_delim",
 ]
 
+
+MASTER_PAPER_HEADER_ROW = MASTER_HEADER_ROW + ['coverage_from_date', 'coverage_through_date']
+
+
+
+
 ## paper filings generally leave out filer_committee_id_number, committee_name, filing_number,
 ## amends, 
 
