@@ -1,13 +1,21 @@
 
 
 ELECTRONIC_ZIPFILE_MANIFEST = 'metadata/electronic_zipfiles.txt'
-
 ELECTRONIC_ZIPDIR = 'zip/electronic/'
 RAW_ELECTRONIC_DIR = 'fecfilings/electronic/'
+
+
+PAPER_ZIPFILE_MANIFEST = 'metadata/paper_zipfiles.txt'
+PAPER_ZIPDIR = 'zip/paper/'
+
+
 
 # does this refresh ? May want a different region? 
 FEC_BUCKET = 'cg-519a459a-0ea3-42c2-b7bc-fa1143481f74.s3-us-gov-west-1.amazonaws.com'
 DOWNLOAD_BASE = "https://%s/bulk-downloads/electronic/" % FEC_BUCKET
+
+
+PAPER_DOWNLOAD_BASE = "https://%s/bulk-downloads/paper/" % FEC_BUCKET
 
 
 # FIRST LINE OF HEADERs processed to this

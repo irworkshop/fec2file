@@ -6,7 +6,7 @@ import sys
 
 from settings import RAW_ELECTRONIC_DIR, MASTER_HEADER_ROW, HEADER_DUMP_FILE
 
-
+ERROR_HEADERS = ['filing_number', 'form', ]
 
 def readfile(filepath, writer):
 
