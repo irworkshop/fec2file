@@ -19,11 +19,12 @@ def readfile(filepath, writer):
     file_number = int(filename)
 
 
-    file = open(filepath, encoding = "ISO-8859-1")
-    #file = open(filepath)
+    firstline = None
+    secondline = None
+    with open(filepath, encoding = "ISO-8859-1") as file:
+        firstline = file.readline()
+        secondline = file.readline()
 
-    firstline = file.readline()
-    secondline = file.readline()
     firstline = firstline.replace("\n", "")
     raw_results = fecfile.parse_header(firstline)
     results = raw_results[0]
@@ -54,7 +55,7 @@ def readfile(filepath, writer):
     results["coverage_from_date"] = secondlineparsed.get('coverage_from_date', '')
 
     writer.writerow(results)
-    file.close()
+
 
 if __name__ == '__main__':
 
