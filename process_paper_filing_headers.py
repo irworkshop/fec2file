@@ -54,6 +54,11 @@ def readfile(filepath, writer):
     results["coverage_through_date"] = secondlineparsed.get('coverage_through_date', '')
     results["coverage_from_date"] = secondlineparsed.get('coverage_from_date', '')
 
+    # hack for F7 / F5 / F9
+    if not results["committee_name"]:
+        results["committee_name"] = secondlineparsed.get('organization_name', '')
+
+
     writer.writerow(results)
 
 
