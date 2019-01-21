@@ -180,9 +180,9 @@ if __name__ == '__main__':
 
         try:
             live_filing_list[str(filenumber)]
-            print("* Found live %s - date: %s" % (filenumber, datestring))
+            #print("* Found live %s - date: %s" % (filenumber, datestring))
         except KeyError:
-            print("  Not live for %s" % filenumber)
+            #print("  Not live for %s" % filenumber)
             continue
 
         result = readfile( "/" + filepath, schedule_writer)
