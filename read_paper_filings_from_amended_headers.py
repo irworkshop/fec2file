@@ -185,8 +185,8 @@ if __name__ == '__main__':
             print("  Not live for %s" % filenumber)
             continue
 
-        #result = readfile( "/" + filepath, schedule_writer)
-        result = readfile( filepath, schedule_writer)
+        result = readfile( "/" + filepath, schedule_writer)
+        #result = readfile( filepath, schedule_writer)
 
         formtypecount.update(result)
         num_processed += 1
