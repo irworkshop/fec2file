@@ -14,7 +14,7 @@ import os
 
 infilepath = "headers/paper_headers_raw.csv"
 
-outfileheaders = ['filing_number', 'file_size', 'file_linecount', 'is_original', 'is_amendment', 'original_id', 'filer_committee_id_number', 'form_type', 'received_date', 'batch_number', 'date_signed', 'coverage_from_date', 'coverage_through_date']
+outfileheaders = ['filing_number', 'file_size', 'file_linecount', 'size_ratio', 'line_ratio', 'is_original', 'is_amendment', 'original_id', 'filer_committee_id_number', 'form_type', 'received_date', 'batch_number', 'date_signed', 'coverage_from_date', 'coverage_through_date']
 outfile =  open(AMENDED_PAPER_HEADER_FILE, 'w')
 writer = csv.DictWriter(outfile, fieldnames=outfileheaders, extrasaction='ignore')
 writer.writeheader()
@@ -61,20 +61,29 @@ for i, filing in enumerate(sorted_filings):
         through_date = filing['coverage_through_date'][:10]
         hash_key = filing_key % (filing['filer_committee_id_number'], from_date, through_date)
         try:
-            original_key = original_filing_dict[hash_key]
+            original_filing = original_filing_dict[hash_key]
+            original_id = original_filing['filing_number']
             sorted_filings[i]['is_original'] = False
             sorted_filings[i]['is_amendment'] = True
-            sorted_filings[i]['original_id'] = original_key
-            print("Found later version %s" % filing['filing_number'])
+            sorted_filings[i]['original_id'] = original_id
+
+
+            sorted_filings[i]['size_ratio'] = (0.0 + sorted_filings[i]['file_size']) / original_filing['file_size']
+            sorted_filings[i]['line_ratio'] = (0.0 + sorted_filings[i]['file_linecount']) / original_filing['file_linecount']
 
 
 
         except KeyError:
-            original_filing_dict[hash_key] = filing['filing_number']
+
+
+            original_filing_dict[hash_key] = filing
 
             sorted_filings[i]['is_original'] = True
             sorted_filings[i]['is_amendment'] = False
             sorted_filings[i]['original_id'] = filing['filing_number']
+
+            sorted_filings[i]['size_ratio'] = 1
+            sorted_filings[i]['line_ratio'] = 1
 
 
 
