@@ -68,8 +68,8 @@ for i, filing in enumerate(sorted_filings):
             sorted_filings[i]['original_id'] = original_id
 
 
-            sorted_filings[i]['size_ratio'] = (0.0 + sorted_filings[i]['file_size']) / int(original_filing['file_size'])
-            sorted_filings[i]['line_ratio'] = (0.0 + sorted_filings[i]['file_linecount']) / int(original_filing['file_linecount'])
+            sorted_filings[i]['size_ratio'] = (0.0 + int(sorted_filings[i]['file_size'])) / int(original_filing['file_size'])
+            sorted_filings[i]['line_ratio'] = (0.0 + int(sorted_filings[i]['file_linecount'])) / int(original_filing['file_linecount'])
 
 
 
