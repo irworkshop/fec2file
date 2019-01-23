@@ -3,15 +3,18 @@ import csv
 from settings import *
 from collections import OrderedDict
 
+import os
+
+
 ## this actually shouldn't be an ordered dict
 ## because it's only ordered by day in the original
 ## and so should be sorted by numeric filing number
 ## before processing 
 
 
-infilepath = "headers/paper_headers1.csv"
+infilepath = "headers/paper_headers_raw.csv"
 
-outfileheaders = ['filing_number', 'is_original', 'is_amendment', 'original_id', 'filer_committee_id_number', 'form_type', 'received_date', 'batch_number', 'date_signed', 'coverage_from_date', 'coverage_through_date']
+outfileheaders = ['filing_number', 'file_size', 'file_linecount', 'is_original', 'is_amendment', 'original_id', 'filer_committee_id_number', 'form_type', 'received_date', 'batch_number', 'date_signed', 'coverage_from_date', 'coverage_through_date']
 outfile =  open(AMENDED_PAPER_HEADER_FILE, 'w')
 writer = csv.DictWriter(outfile, fieldnames=outfileheaders, extrasaction='ignore')
 writer.writeheader()
@@ -32,7 +35,10 @@ with open(infilepath, 'r') as infile:
             'coverage_from_date':row['coverage_from_date'],
             'coverage_through_date':row['coverage_through_date'],
             'batch_number':row['batch_number'],
-            'filing_number':filing_number
+            'filing_number':filing_number,
+            'file_size':row['file_size'],
+            'file_linecount':row['file_linecount'],
+
             }
         filing_list.append(this_filing)
 
@@ -49,6 +55,8 @@ original_filing_dict = {}
 for i, filing in enumerate(sorted_filings):
     #print("handling filing %s" % filing)
     if filing['form_type'].startswith("F3"):
+
+
         from_date = filing['coverage_from_date'][:10]
         through_date = filing['coverage_through_date'][:10]
         hash_key = filing_key % (filing['filer_committee_id_number'], from_date, through_date)

@@ -63,7 +63,7 @@ MASTER_HEADER_ROW = [
 ]
 
 
-MASTER_PAPER_HEADER_ROW = MASTER_HEADER_ROW + ['coverage_from_date', 'coverage_through_date']
+MASTER_PAPER_HEADER_ROW = ['file_size', 'file_linecount'] +  MASTER_HEADER_ROW + ['coverage_from_date', 'coverage_through_date']
 
 
 

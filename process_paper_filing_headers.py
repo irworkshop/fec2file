@@ -21,9 +21,20 @@ def readfile(filepath, writer):
 
     firstline = None
     secondline = None
+    linecount = 2 # header + formline
     with open(filepath, encoding = "ISO-8859-1") as file:
         firstline = file.readline()
         secondline = file.readline()
+
+
+        while True:
+            nextline = file.readline()
+            if not nextline:
+                break
+            linecount += 1
+
+
+    file_size = os.path.getsize(filepath)
 
     firstline = firstline.replace("\n", "")
     raw_results = fecfile.parse_header(firstline)
@@ -53,6 +64,8 @@ def readfile(filepath, writer):
     results["form_type"] = secondlineparsed.get('form_type', '')
     results["coverage_through_date"] = secondlineparsed.get('coverage_through_date', '')
     results["coverage_from_date"] = secondlineparsed.get('coverage_from_date', '')
+    results["file_size"] = file_size
+    results["file_linecount"] = linecount
 
     # hack for F7 / F5 / F9
     if not results["committee_name"]:
