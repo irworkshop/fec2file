@@ -61,6 +61,9 @@ for i, filing in enumerate(sorted_filings):
         from_date = filing['coverage_from_date'][:10]
         through_date = filing['coverage_through_date'][:10]
         hash_key = filing_key % (filing['filer_committee_id_number'], from_date, through_date)
+        
+        sorted_filings[i]['most_recent'] = True
+
         try:
             # is there already an earlier filing entered for this key? 
             original_filing = original_filing_dict[hash_key]
@@ -83,8 +86,7 @@ for i, filing in enumerate(sorted_filings):
             sorted_filings[i]['size_ratio'] = size_ratio
             sorted_filings[i]['line_ratio'] = line_ratio
 
-            
-            sorted_filings[i]['most_recent'] = True
+
 
             if line_ratio > 0.8:
                 # it's a full replacement mark it as such
