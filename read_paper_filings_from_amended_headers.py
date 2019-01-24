@@ -118,7 +118,7 @@ if __name__ == '__main__':
     max = 0
     included = 0
     for i,row in enumerate(reader):
-        if row['is_original']=='True':
+        if row['most_recent']=='True':
             live_filing_list[row['filing_number']] = row['form_type']
             included += 1
 
