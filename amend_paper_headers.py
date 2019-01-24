@@ -11,7 +11,7 @@ import os
 ## and so should be sorted by numeric filing number
 ## before processing 
 
-# Sandhya Kambhampati
+
 
 infilepath = "headers/paper_headers_raw.csv"
 
@@ -83,6 +83,9 @@ for i, filing in enumerate(sorted_filings):
             sorted_filings[i]['size_ratio'] = size_ratio
             sorted_filings[i]['line_ratio'] = line_ratio
 
+            
+            sorted_filings[i]['most_recent'] = True
+
             if line_ratio > 0.8:
                 # it's a full replacement mark it as such
                 print("Found full replacement for %s to be %s" % (original_id, filing['filing_number']))
@@ -116,8 +119,7 @@ for i, filing in enumerate(sorted_filings):
             sorted_filings[i]['is_amendment'] = False
             sorted_filings[i]['original_id'] = filing['filing_number']
 
-            sorted_filings[i]['size_ratio'] = 1
-            sorted_filings[i]['line_ratio'] = 1
+            
 
 
 
