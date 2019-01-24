@@ -11,10 +11,11 @@ import os
 ## and so should be sorted by numeric filing number
 ## before processing 
 
+# Sandhya Kambhampati
 
 infilepath = "headers/paper_headers_raw.csv"
 
-outfileheaders = ['filing_number', 'file_size', 'file_linecount', 'size_ratio', 'line_ratio', 'is_original', 'is_amendment', 'original_id', 'filer_committee_id_number', 'form_type', 'received_date', 'batch_number', 'date_signed', 'coverage_from_date', 'coverage_through_date']
+outfileheaders = ['filing_number', 'file_size', 'file_linecount', 'size_ratio', 'line_ratio', 'is_original', 'most_recent', 'is_amendment', 'original_id', 'filer_committee_id_number', 'form_type', 'received_date', 'batch_number', 'date_signed', 'coverage_from_date', 'coverage_through_date']
 outfile =  open(AMENDED_PAPER_HEADER_FILE, 'w')
 writer = csv.DictWriter(outfile, fieldnames=outfileheaders, extrasaction='ignore')
 writer.writeheader()
@@ -61,15 +62,48 @@ for i, filing in enumerate(sorted_filings):
         through_date = filing['coverage_through_date'][:10]
         hash_key = filing_key % (filing['filer_committee_id_number'], from_date, through_date)
         try:
+            # is there already an earlier filing entered for this key? 
             original_filing = original_filing_dict[hash_key]
+            # if one exists, is it a full replacement or not? 
+            # if it's not a full replacement, ignore it. 
+            # this means we ignore the effects of minor amendments
+            # in practice this is usually because they made a few mistakes
+            # or got the summary totals wrong
+
+
             original_id = original_filing['filing_number']
-            sorted_filings[i]['is_original'] = False
-            sorted_filings[i]['is_amendment'] = True
-            sorted_filings[i]['original_id'] = original_id
+
+            # file size, in bytes
+            size_ratio = (0.0 + int(sorted_filings[i]['file_size'])) / int(original_filing['file_size'])
+            # number of lines of files
+            # I think lengthy memo text fields that are added in explanation / removed
+            # contributes to the weirder size changes
+            line_ratio = (0.0 + int(sorted_filings[i]['file_linecount'])) / int(original_filing['file_linecount'])
+
+            sorted_filings[i]['size_ratio'] = size_ratio
+            sorted_filings[i]['line_ratio'] = line_ratio
+
+            if line_ratio > 0.8:
+                # it's a full replacement mark it as such
+                print("Found full replacement for %s to be %s" % (original_id, filing['filing_number']))
+
+                sorted_filings[i]['original_id'] = original_id
+                sorted_filings[i]['is_original'] = False
+                sorted_filings[i]['is_amendment'] = True
+                sorted_filings[i]['most_recent'] = True
 
 
-            sorted_filings[i]['size_ratio'] = (0.0 + int(sorted_filings[i]['file_size'])) / int(original_filing['file_size'])
-            sorted_filings[i]['line_ratio'] = (0.0 + int(sorted_filings[i]['file_linecount'])) / int(original_filing['file_linecount'])
+                original_filing_dict[hash_key]['most_recent'] = False
+
+            elif line_ratio < 0.65 and line_ratio > 0.5:
+                print("line ratio of %s for %s" % (line_ratio, sorted_filings[i]))
+
+            else:
+
+                sorted_filings[i]['original_id'] = original_id
+                sorted_filings[i]['is_original'] = False
+                sorted_filings[i]['is_amendment'] = True
+                sorted_filings[i]['most_recent'] = False
 
 
 
