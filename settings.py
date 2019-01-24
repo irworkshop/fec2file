@@ -36,8 +36,6 @@ SCHEDULE_A_PAPER_OUTFILE = 'schedules/ScheduleA-paper.csv'
 SCHEDULE_B_OUTFILE = 'schedules/ScheduleB.csv'
 SCHEDULE_B_PAPER_OUTFILE = 'schedules/ScheduleB-paper.csv'
 
-
-
 # from https://github.com/esonderegger/fecfile/blob/master/fecfile/mappings.json#L2
 
 # Not every version completes these all
