@@ -114,8 +114,13 @@ def process_sked_a(committeedict, candidatedict):
         CMTE_ID = row['filer_committee_id_number']
 
         raw_year = row['contribution_date']
-        year = int(raw_year[:4])
-        
+        year = 0
+        try:
+            year = int(raw_year[:4])
+        except ValueError:
+            print("no year in %s %s" % (row['filing_number'], row['line_sequence']))
+            continue
+
         if year < MIN_YEAR:
             continue
 
@@ -177,7 +182,12 @@ def process_sked_b(committeedict, candidatedict):
         CMTE_ID = row['filer_committee_id_number']
 
         raw_year = row['expenditure_date']
-        year = int(raw_year[:4])
+        year = 0
+        try:
+            year = int(raw_year[:4])
+        except ValueError:
+            print("no year in %s %s" % (row['filing_number'], row['line_sequence']))
+            continue
         if year < MIN_YEAR:
             continue
         row['year'] = year
