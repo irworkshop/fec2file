@@ -147,7 +147,8 @@ def process_sked_a(committeedict, candidatedict):
             #print("Found match * %s %s" % (row['CMTE_NM'], committee_key))
         except KeyError:
             print("line %s: missing %s" % (i, committee_key))
-            pass
+            dw.writerow(row)
+            continue
 
         # add the candidate name, if applicable
         if row['CAND_ID']:
@@ -212,9 +213,12 @@ def process_sked_b(committeedict, candidatedict):
             #print("Found match * %s %s" % (row['CMTE_NM'], committee_key))
         except KeyError:
             print("line %s: committee missing %s" % (i, committee_key))
-            pass
+            dw.writerow(row)
+            continue
+
 
         # add the candidate name, if applicable
+        
         if row['CAND_ID']:
             candidate_key = CANDIDATE_DICT_KEY % (row['CAND_ID'], year_string)
             try:
@@ -224,7 +228,7 @@ def process_sked_b(committeedict, candidatedict):
                 #print("Found match * %s %s" % (row['CMTE_NM'], committee_key))
             except KeyError:
                 print("line %s: candidate missing %s" % (i, committee_key))
-                pass
+
 
         
         dw.writerow(row)
