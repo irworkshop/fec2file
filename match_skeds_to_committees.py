@@ -241,9 +241,9 @@ if __name__ == '__main__':
     candidatedict = get_candidate_dict()
 
     # run the skeds through them
-    #process_sked_a(committeedict, candidatedict)
+    process_sked_a(committeedict, candidatedict)
 
-    process_sked_b(committeedict, candidatedict)
+    #process_sked_b(committeedict, candidatedict)
 
 
 
