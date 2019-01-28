@@ -99,7 +99,6 @@ def get_candidate_dict():
     print("Created candidate lookup with %s keys" % i)
     return candict
 
-
 def process_sked_a(committeedict, candidatedict,  year):
 
     f = open(SKEDA_OUTFILE % year, 'w')
@@ -163,11 +162,7 @@ def process_sked_a(committeedict, candidatedict,  year):
                 print("line %s: missing %s" % (i, committee_key))
                 pass
 
-        
         dw.writerow(row)
-
-
-
 
 def process_sked_b(committeedict, candidatedict, year):
     f = open(SKEDB_OUTFILE % year, 'w')
@@ -239,6 +234,8 @@ if __name__ == '__main__':
     candidatedict = get_candidate_dict()
 
     YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+
+    YEARS = [2007,] # testing
 
     for year in YEARS: 
         process_sked_a(committeedict, candidatedict, year)

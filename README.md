@@ -6,7 +6,7 @@ Most users will prefer the FEC's bulk files, which are easier to use and availab
 
 ## Local settings
 
-You may want to set the following variables in a local\_settings.py file, which will override the settings.py values. The full download requires 14GB and 111GB for the zipped and unzipped directories respectively; the final extract schedules A and B amount to about 75GB. 
+You may want to set the following variables in a local\_settings.py file, which will override the settings.py values. The full download requires ~15GB and ~110GB for the zipped and unzipped directories respectively; the final extract schedules A and B amount to upwards of 75GB. 
 
 	ELECTRONIC_ZIPDIR  # where the zipped electronic filings go
 	RAW_ELECTRONIC_DIR # where the unzipped electronic filings go
@@ -57,6 +57,8 @@ The output is written to settings.SCHEDULE_A_OUTFILE and settings.SCHEDULE_B_OUT
 
 `$python read_filings_from_amended_headers.py`
 
+The actual files are stamped with the year that the corresponding report comes from; in other words, contributions in reports filed covering 2007 appear in ScheduleA-2007.csv. A small fraction of line items include dates that do not match their file year, but we believe these are generally in error because they've been included in a file for that year. 
+
 
 ### 6. Add committee / candidate names
 
@@ -64,6 +66,7 @@ The schedule output files include committee ids, but it's helpful for users to h
 
 `$python match_skeds_to_committees.py`
 
+This reads the output scheduleX-YYYY.csv files and outputs them as ScheduleX-YYYY_annotated.csv. Note that these files are even bigger than the originals. 
 
 
 ## B. processing paper zipfiles
@@ -89,15 +92,20 @@ The zipfiles are downloaded into settings.PAPER\_ZIPDIR, which by default is zip
 
 This just executes the unzip command using an old school os.system call, there's doubtless a better approach to this. 
 
+### 3. Extract the headers
+
+`$ python process_paper_filing_headers.py`
+
+Writes a .csv file to settings.HEADER\_PAPER\_DUMP\_FILE, by default headers/paper\_headers\_raw.csv. 
 
 
 # Processing logic
 
 ### Overview
 
-The FEC predates electronic record-keeping, and many of it's regulations are aimed at insuring there exists a complete paper record of campaign spending. While the FEC has done a great job at making data available, there are some limitations. 
+The FEC predates electronic recordkeeping, and many of it's regulations are aimed at insuring there exists a complete record of campaign transactions. While the FEC has done a great job at making data available electronically, there are some limitations to the public release.
 
-As a matter of policy, FEC doesn't release the street addresses of people and companies named. This restriction applies to any downloads from the site, with the exception of the original filings received. This is a nod to the law: it's illegal to collect address information from campaign donors in order to make mailing lists of your own. 
+FEC's bulk releases do not include the street addresses of campaign donors and contractors. This restriction applies to any downloads from the site, with the exception of the original filings received. This is a nod to the law: it's illegal to collect address information from campaign donors in order to make mailing lists of your own. 
 
 For journalists, investigators and citizens interested in tracking influence, however, addresses can provide critical confirmation of a linkage between corporate entities. These addresses can be found on the original filings displayed on FEC's web site, but this is of little use if you don't know which filing to reference. 
 
@@ -105,7 +113,6 @@ To extract the most complete record of campaign finance available, it is necessa
 
 This only became possible around 2015, when the FEC began releasing the .fec files of submissions originally made on paper. Prior to then, complete address information was only available on electronic filings. 
 
-TK TK TK
 
 ### Periodic versus ephemeral filngs
 
@@ -113,7 +120,7 @@ US election law requires "independent" election spenders to report large expendi
 
 These early notifications are intended to let the public know about the spending, but in exchange for their timeliness FEC tolerates less exact numbers. The "final" version of the transactions also appear in a monthly or quarterly periodic report, which also include special pre- and post- election periods. 
 
-This library disregards the 24 and 48 hour reports in favor of the periodic reports, as those are seen as more reliable. This means, however, that you'd have to add data from the periodic reports to make this 
+This library disregards the 24 and 48 hour reports in favor of the periodic reports, as those are seen as more reliable. This means, however, that data extracted using this library will not be 
 
 ### Amendments
 
@@ -132,4 +139,13 @@ Another way of thinking about these filings is whether a report is the "most rec
 
 ### Paper filings
 
-Paper filings are more of a challenge because 1. they are not required to *fully replace* the original filing and 2. because they 
+Paper filings are more of a challenge because 1. they are not required to *fully replace* the original filing and 2. because they are not required to specify the original. 
+
+This library assumes that multiple filings from the same committee covering the same time period are amendments. 
+
+To differentiate between full and partial amendments, this library only considers amendments with 10 lines or more and 80% of the number of lines of the original to be complete replacements. This means that a small number of reports may have out of date details, although most amendments introduce relatively few changes. 
+
+
+### Caveats
+
+This approach was originally developed to support comprehensive search of this data rather than the ability to sum it. Because of the possible errors introduced, especially as detailed in the paper amendment processing section above, we urge users to treat this data as approximate, and consult other sources for more precise numbers: including the FEC's web site, the Center for Responsive Politics or the National Institute for Money in State Politics. 
