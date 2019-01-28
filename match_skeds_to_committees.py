@@ -1,16 +1,19 @@
 """ the raw contribution files only give an id for the committee name; match them to the committee file. """
 
 import csv
+import settings
+
+
 
 COMMITTEE_FILES = ['data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
 CANDIDATE_FILES = ['data/18/cn.txt', 'data/16/cn.txt', 'data/14/cn.txt', 'data/12/cn.txt', 'data/10/cn.txt', 'data/08/cn.txt']
 
+SKEDA_PROCESSED = settings.SCHEDULE_A_OUTFILE 
+SKEDA_OUTFILE = SKEDA_PROCESSED.replace(".csv", "_annotated.csv")
 
-SKEDA_INFILE = '/data2/ScheduleA.csv'
-SKEDA_OUTFILE = SKEDA_INFILE.replace(".csv", "_annotated.csv")
 
-SKEDB_INFILE = '/data2/ScheduleB.csv'
-SKEDB_OUTFILE = SKEDB_INFILE.replace(".csv", "_annotated.csv")
+SKEDB_PROCESSED = settings.SCHEDULE_B_OUTFILE 
+SKEDB_OUTFILE = SKEDB_PROCESSED.replace(".csv", "_annotated.csv")
 
 
 COMMITTEE_HEADERS = ['CMTE_ID', 'CMTE_NM', 'TRES_NM', 'CMTE_ST1', 'CMTE_ST2', 'CMTE_CITY', 'CMTE_ST', 'CMTE_ZIP', 'CMTE_DSGN', 'CMTE_TP', 'CMTE_PTY_AFFILIATION', 'CMTE_FILING_FREQ', 'ORG_TP', 'CONNECTED_ORG_NM', 'CAND_ID']
@@ -18,12 +21,10 @@ CANDIDATE_HEADERS = ['CAND_ID','CAND_NAME','CAND_PTY_AFFILIATION','CAND_ELECTION
 
 
 SKEDA_HEADERS = ['filing_number','line_sequence','form_type','filer_committee_id_number','transaction_id','back_reference_tran_id_number','back_reference_sched_name','entity_type','contributor_organization_name','contributor_name','contributor_last_name','contributor_first_name','contributor_middle_name','contributor_prefix','contributor_suffix','contributor_street_1','contributor_street_2','contributor_city','contributor_state','contributor_zip_code','election_code','election_other_description','contribution_date','contribution_amount','contribution_aggregate','contribution_purpose_descrip','contributor_employer','contributor_occupation','donor_committee_fec_id','donor_committee_name','donor_candidate_fec_id','donor_candidate_last_name','donor_candidate_first_name','donor_candidate_middle_name','donor_candidate_prefix','donor_candidate_suffix','donor_candidate_office','donor_candidate_state','donor_candidate_district','conduit_name','conduit_street1','conduit_street2','conduit_city','conduit_state','conduit_zip_code','memo_code','memo_text_description','reference_code']
-# TK ADD CANDIDATE NAMES
 SKEDA_RESULT_HEADERS = SKEDA_HEADERS + ['year','CMTE_NM', 'CMTE_ST1','CMTE_ST2','CMTE_CITY', 'CMTE_ST', 'CMTE_ZIP', 'CAND_ID', 'CAND_NAME']
 
 SKEDB_HEADERS = ['filing_number','line_sequence','form_type','filer_committee_id_number','transaction_id_number','back_reference_tran_id_number','back_reference_sched_name','entity_type','payee_organization_name','payee_name', 'payee_last_name','payee_first_name','payee_middle_name','payee_prefix','payee_suffix','payee_street_1','payee_street_2','payee_city','payee_state','payee_zip_code','election_code','election_other_description','expenditure_date','expenditure_amount','semi_annual_refunded_bundled_amt','expenditure_purpose_descrip','category_code','beneficiary_committee_fec_id','beneficiary_committee_name','beneficiary_candidate_fec_id','beneficiary_candidate_last_name','beneficiary_candidate_first_name','beneficiary_candidate_middle_name','beneficiary_candidate_prefix','beneficiary_candidate_suffix','beneficiary_candidate_office','beneficiary_candidate_state','beneficiary_candidate_district','conduit_name','conduit_street_1','conduit_street_2','conduit_city','conduit_state','conduit_zip_code','memo_code','memo_text_description','reference_to_si_or_sl_system_code_that_identifies_the_account']
 SKEDB_RESULT_HEADERS = SKEDB_HEADERS + ['year', 'CMTE_NM', 'CMTE_ST1','CMTE_ST2','CMTE_CITY', 'CMTE_ST', 'CMTE_ZIP', 'CAND_ID', 'CAND_NAME']
-
 
 COMMITTEE_DICT_KEY = "%s-%s" 
 CANDIDATE_DICT_KEY = "%s-%s" 
@@ -99,13 +100,13 @@ def get_candidate_dict():
     return candict
 
 
-def process_sked_a(committeedict, candidatedict):
+def process_sked_a(committeedict, candidatedict,  year):
 
-    f = open(SKEDA_OUTFILE, 'w')
+    f = open(SKEDA_OUTFILE % year, 'w')
     dw = csv.DictWriter(f, fieldnames=SKEDA_RESULT_HEADERS)
     dw.writeheader()
 
-    infile = open(SKEDA_INFILE, 'r')
+    infile = open(SKEDA_PROCESSED % year, 'r')
     reader = csv.DictReader(infile)
 
     for (i,row) in enumerate(reader):
@@ -168,13 +169,12 @@ def process_sked_a(committeedict, candidatedict):
 
 
 
-def process_sked_b(committeedict, candidatedict):
-
-    f = open(SKEDB_OUTFILE, 'w')
+def process_sked_b(committeedict, candidatedict, year):
+    f = open(SKEDB_OUTFILE % year, 'w')
     dw = csv.DictWriter(f, fieldnames=SKEDB_RESULT_HEADERS)
     dw.writeheader()
 
-    infile = open(SKEDB_INFILE, 'r')
+    infile = open(SKEDB_PROCESSED % year, 'r')
     reader = csv.DictReader(infile)
 
     for (i,row) in enumerate(reader):
@@ -233,17 +233,16 @@ def process_sked_b(committeedict, candidatedict):
         
         dw.writerow(row)
 
-
 if __name__ == '__main__':
     
-    # make the lookup tables
     committeedict = get_committee_dict()
     candidatedict = get_candidate_dict()
 
-    # run the skeds through them
-    process_sked_a(committeedict, candidatedict)
+    YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
-    #process_sked_b(committeedict, candidatedict)
+    for year in YEARS: 
+        process_sked_a(committeedict, candidatedict, year)
+        process_sked_b(committeedict, candidatedict, year)
 
 
 

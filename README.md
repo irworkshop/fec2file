@@ -46,10 +46,7 @@ Writes a .csv file to settings.HEADER\_DUMP\_FILE, by default headers/headers\_r
 Reads from settings.HEADER\_DUMP\_FILE and writes output to settings.AMENDED\_HEADER\_FILE. It includes  filing\_number,is\_superseded,amended\_by,last_amendment,report\_number,filer\_committee\_id\_number,form\_type,date\_signed,coverage\_from\_date,coverage\_through\_date, comment. 
 
 Filings that are not superseded by a later amendment are included, whereas those that have been replaced are not. 
-
-It's important to note that there's some ambiguity about how "chains" of amendments get listed. The logic used here is that if 2 amends 1 and 3 amends 2, sometimes 3 will be listed as if it is amending 1. 
-
-Another way of thinking about these filings is whether a report is the "most recent" version of an electronic filing. This works because FEC requires filers to submit an *complete replacement* of the original filing in the amendment. 
+ 
 
 
 ### 5. Read the most recent periodic filings and extract data
@@ -63,9 +60,9 @@ The output is written to settings.SCHEDULE_A_OUTFILE and settings.SCHEDULE_B_OUT
 
 ### 6. Add committee / candidate names
 
-The raw files include committee ids, but it's helpful for users to have the committee and candidate name (if there is one). This annotates the schedule a and b .csv files with this info.
+The schedule output files include committee ids, but it's helpful for users to have the committee and candidate name (if applicable). This annotates the schedule a and b .csv files with this info. It adds to the overall file size, so it may not be helpful for all uses. 
 
-`$python read_filings_from_amended_headers.py`
+`$python match_skeds_to_committees.py`
 
 
 
@@ -85,6 +82,12 @@ retrieves the zipfiles that are listed in the metadata/paper\_zipfiles.txt (or s
 Because there are some random names it's often easier to just grab this from the live ftp site and paste it into the manifest file. 
 
 The zipfiles are downloaded into settings.PAPER\_ZIPDIR, which by default is zip/paper/
+
+### 2. Unzip the files
+
+`$ python unzip_filings.py`
+
+This just executes the unzip command using an old school os.system call, there's doubtless a better approach to this. 
 
 
 
@@ -114,11 +117,19 @@ This library disregards the 24 and 48 hour reports in favor of the periodic repo
 
 ### Amendments
 
-US campaign finance rules allow filers to amend their filings as many times as they want. Dealing with files submitted electronically is relatively simple, because the original filing is listed in the report header. In other words, the amendment says which original report it is "fixing". 
-
-Paper amendments are more difficult, because they do not say which filing they are changing. 
+US campaign finance rules allow filers to amend their filings as many times as they want. Filings that come under scrutiny may be amended a half dozen times. Most individual amendments introduce few changes.
 
 
 ### Electronic filings
 
+Processing electronic filing amendment is relatively straightforward, because the file submission format requires amended filings to 1. provide the id of the filing they are amending and 2. replace the filing completely. 
 
+The basic approach we are taking is to identify all of the "most recent" electronic filings, and export the data from those filings only. 
+
+It's important to note that there's some ambiguity about how "chains" of amendments get listed. The logic used here is that if 2 amends 1 and 3 amends 2, filing 3 will sometimes list 1 or 2.  
+
+Another way of thinking about these filings is whether a report is the "most recent" version of an electronic filing. This works because FEC requires filers to submit an *complete replacement* of the original filing in the amendment.
+
+### Paper filings
+
+Paper filings are more of a challenge because 1. they are not required to *fully replace* the original filing and 2. because they 
