@@ -118,7 +118,7 @@ def process_sked_a(committeedict, candidatedict,  year):
         try:
             year = int(raw_year[:4])
         except ValueError:
-            print("no year in %s %s" % (row['filing_number'], row['line_sequence']))
+            #print("no year in %s line %s: %s" % (row['filing_number'], row['line_sequence'], raw_year))
             continue
 
         if year < MIN_YEAR:
@@ -182,7 +182,7 @@ def process_sked_b(committeedict, candidatedict, year):
         try:
             year = int(raw_year[:4])
         except ValueError:
-            print("no year in %s %s" % (row['filing_number'], row['line_sequence']))
+            #print("no year in %s line %s: %s" % (row['filing_number'], row['line_sequence'], raw_year))
             continue
         if year < MIN_YEAR:
             continue
@@ -240,8 +240,4 @@ if __name__ == '__main__':
     for year in YEARS: 
         process_sked_a(committeedict, candidatedict, year)
         process_sked_b(committeedict, candidatedict, year)
-
-
-
-
 
