@@ -159,8 +159,10 @@ if __name__ == '__main__':
         for year in YEARS:
 
             outfile = schedule_writer[sked]['outfile'] % year
-            headers = schedule_writer[sked]['headers'] % year
+            headers = schedule_writer[sked]['headers']
 
+            schedule_writer[sked][year] = {}
+            
             schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
             schedule_writer[sked][year]['writer'].writeheader()
 
