@@ -11,7 +11,7 @@ from collections import OrderedDict
 
 infilepath = "headers/headers1.csv"
 
-outfileheaders = ['filing_number', 'is_superseded', 'amended_by', 'last_amendment', 'report_number', 'filer_committee_id_number', 'form_type', 'date_signed', 'comment']
+outfileheaders = ['filing_number', 'is_superseded', 'amended_by', 'last_amendment', 'report_number', 'filer_committee_id_number', 'form_type', 'date_signed', 'coverage_from_date', 'coverage_through_date', 'comment']
 outfile =  open(AMENDED_HEADER_FILE, 'w')
 writer = csv.DictWriter(outfile, fieldnames=outfileheaders, extrasaction='ignore')
 writer.writeheader()
@@ -32,6 +32,8 @@ with open(infilepath, 'r') as infile:
             'filer_committee_id_number':row['filer_committee_id_number'],
             'form_type':row['form_type'],
             'date_signed':row['date_signed'],
+            'coverage_from_date':row['coverage_from_date'],
+            'coverage_through_date':row['coverage_through_date'],
             'comment':row['comment']
             }
         amends = row.get('amends', None)

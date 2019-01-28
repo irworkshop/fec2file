@@ -6,7 +6,7 @@ import sys
 
 from settings import RAW_ELECTRONIC_DIR, MASTER_HEADER_ROW, HEADER_DUMP_FILE
 
-ERROR_HEADERS = ['filing_number', 'form', ]
+ERROR_HEADERS = ['path', 'error', ]
 
 def readfile(filepath, writer):
 
@@ -45,6 +45,8 @@ def readfile(filepath, writer):
     results["filer_committee_id_number"] = secondlineparsed.get('filer_committee_id_number', '')
     results["committee_name"] = secondlineparsed.get('committee_name', '')
     results["date_signed"] = secondlineparsed.get('date_signed', '')
+    results["coverage_from_date"] = secondlineparsed.get('coverage_from_date', '')
+    results["coverage_through_date"] = secondlineparsed.get('coverage_through_date', '')
 
     writer.writerow(results)
 
@@ -55,7 +57,7 @@ if __name__ == '__main__':
     dw = csv.DictWriter(outfile, fieldnames=MASTER_HEADER_ROW, extrasaction='ignore')
     dw.writeheader()
 
-    errorfile = open("header_read_errors.csv")
+    errorfile = open("header_read_errors.csv", 'w')
     error_writer = csv.DictWriter(errorfile, fieldnames=ERROR_HEADERS, extrasaction='ignore')
     error_writer.writeheader()
 
@@ -68,7 +70,14 @@ if __name__ == '__main__':
                 #print("Found file %s" % full_path)
 
                 try:
-                     readfile(full_path, dw)
+                    readfile(full_path, dw)
                 except Exception as e:
-                    print("-Error in %s: %s" % (full_path, e))
+                    print("error reading %s: %s" % (full_path, e))
+
+                    error_writer.writerow({
+                        'path':full_path,
+                        'error':e
+                        })
+                    
+                    
 

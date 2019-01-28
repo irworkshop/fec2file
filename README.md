@@ -63,6 +63,14 @@ The output is written to settings.SCHEDULE_A_OUTFILE and settings.SCHEDULE_B_OUT
 `$python read_filings_from_amended_headers.py`
 
 
+### 6. Add committee / candidate names
+
+The raw files include committee ids, but it's helpful for users to have the committee and candidate name (if there is one). This annotates the schedule a and b .csv files with this info.
+
+`$python read_filings_from_amended_headers.py`
+
+
+
 ## B. processing paper zipfiles
 
 Overall this process is very similar to dealing with the electronic filings, but amendments are more complex because A. they can be either full or partial replacements, although there's no indication given in the filing as to which they are and B. there's no listing of the "original" filing being fixed. 

@@ -39,6 +39,7 @@ legal_skeds = ['A', 'B']
 
 # To really do sked E we gotta include F57, from the F5's
 
+YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
 
 schedule_writer = {
@@ -52,7 +53,7 @@ schedule_writer = {
     },
 }
 
-def readfile(path_to_file, schedule_writer):
+def readfile(path_to_file, schedule_writer, year):
     filename = os.path.basename(path_to_file)
     filenumber = int(filename.replace(".fec", ""))
     #print("reading filing %s from %s" % (filenumber, path_to_file))
@@ -90,11 +91,13 @@ def readfile(path_to_file, schedule_writer):
                     parsed['filing_number'] = filenumber
                     parsed['line_sequence'] = linecount
 
+
                     if form_type.startswith("SA"):
-                        schedule_writer['A']['writer'].writerow(parsed)
+                        schedule_writer['A'][year]['writer'].writerow(parsed)
 
                     if form_type.startswith("SB"):
-                        schedule_writer['B']['writer'].writerow(parsed)
+                        schedule_writer['B'][year]['writer'].writerow(parsed)
+
 
 
                 
@@ -118,28 +121,50 @@ if __name__ == '__main__':
     count = {}
     max = 0
     included = 0
+    year_missing = 0
     for i,row in enumerate(reader):
         raw_form_type = row['form_type']
         form_type = raw_form_type.rstrip('ANT')
         max=i
 
         if form_type in main_forms and row['is_superseded'] == 'False':
-            #print("Got form to process %s %s" % (row['filing_number'], row['form_type']))
-            live_filing_list[row['filing_number']] = row['form_type']
-            included += 1
+            year_raw = row.get('coverage_from_date')
+            print("%s" % year_raw)
+            year = None
+            if year_raw:
+                year_left = year_raw[:4]
+                try:
+                    year = int(year_left)
+                    row['year'] = year
+                    print("Found year %s from %s" % (year, year_raw))
+                except (ValueError, TypeError) as e:
+                    print("Missing year in %s" % row)
+                    year_missing += 1
+
+                if year > 2006 and year < 2020:
+
+                    #print("Got form to process %s %s" % (row['filing_number'], row['form_type']))
+                    live_filing_list[row['filing_number']] = year
+                    included += 1
 
 
     hash_done = datetime.now()
     print("Read %s rows and hashed %s in %s" % (max, included, hash_done-start))
+    print("Years missing: %s" % year_missing)
+
+    assert False
 
 
     # set up the writers
     for sked in legal_skeds:
-        outfile = schedule_writer[sked]['outfile']
-        headers = schedule_writer[sked]['headers']
+        for year in YEARS:
 
-        schedule_writer[sked]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
-        schedule_writer[sked]['writer'].writeheader()
+            outfile = schedule_writer[sked]['outfile'] % year
+            headers = schedule_writer[sked]['headers'] % year
+
+            schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
+            schedule_writer[sked][year]['writer'].writeheader()
+
 
     # num processed 
     
@@ -184,14 +209,15 @@ if __name__ == '__main__':
         filepath = filingdict['filepath']
         datestring = filingdict['datestring']
 
+        year = None
         try:
-            live_filing_list[str(filenumber)]
+            year = live_filing_list[str(filenumber)]
             #print("* Found live %s - date: %s" % (filenumber, datestring))
         except KeyError:
             #print("  Not live for %s" % filenumber)
             continue
 
-        result = readfile( "/" + filepath, schedule_writer)
+        result = readfile( "/" + filepath, schedule_writer, year)
         formtypecount.update(result)
         num_processed += 1
 

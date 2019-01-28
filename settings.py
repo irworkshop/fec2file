@@ -30,11 +30,11 @@ AMENDED_HEADER_FILE = 'headers/headers_amended.csv'
 AMENDED_PAPER_HEADER_FILE = 'headers/paperheaders_amended.csv'
 
 
-SCHEDULE_A_OUTFILE = 'schedules/ScheduleA.csv'
-SCHEDULE_A_PAPER_OUTFILE = 'schedules/ScheduleA-paper.csv'
+SCHEDULE_A_OUTFILE = "schedules/ScheduleA-%s.csv"
+SCHEDULE_A_PAPER_OUTFILE = "schedules/ScheduleA-%s-paper.csv"
 
-SCHEDULE_B_OUTFILE = 'schedules/ScheduleB.csv'
-SCHEDULE_B_PAPER_OUTFILE = 'schedules/ScheduleB-paper.csv'
+SCHEDULE_B_OUTFILE = "schedules/ScheduleB-%s.csv"
+SCHEDULE_B_PAPER_OUTFILE = "schedules/ScheduleB-%s-paper.csv"
 
 # from https://github.com/esonderegger/fecfile/blob/master/fecfile/mappings.json#L2
 
@@ -58,10 +58,12 @@ MASTER_HEADER_ROW = [
     "report_number",
     "comment",
     "name_delim",
+    "coverage_from_date",
+    "coverage_through_date"
 ]
 
 
-MASTER_PAPER_HEADER_ROW = ['file_size', 'file_linecount'] +  MASTER_HEADER_ROW + ['coverage_from_date', 'coverage_through_date']
+MASTER_PAPER_HEADER_ROW = ['file_size', 'file_linecount'] +  MASTER_HEADER_ROW 
 
 
 

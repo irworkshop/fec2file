@@ -36,6 +36,8 @@ other_forms = [ 'F5', 'F7', 'F13']
 
 legal_skeds = ['A', 'B']
 
+
+YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 # To really do sked E we gotta include F57, from the F5's
 
 
@@ -51,7 +53,7 @@ schedule_writer = {
     },
 }
 
-def readfile(path_to_file, schedule_writer):
+def readfile(path_to_file, schedule_writer, year):
     filename = os.path.basename(path_to_file)
     filenumber = int(filename.replace(".fec", ""))
     #print("reading filing %s from %s" % (filenumber, path_to_file))
@@ -90,10 +92,10 @@ def readfile(path_to_file, schedule_writer):
                     parsed['line_sequence'] = linecount
 
                     if form_type.startswith("SA"):
-                        schedule_writer['A']['writer'].writerow(parsed)
+                        schedule_writer['A'][year]['writer'].writerow(parsed)
 
                     if form_type.startswith("SB"):
-                        schedule_writer['B']['writer'].writerow(parsed)
+                        schedule_writer['B'][year]['writer'].writerow(parsed)
 
 
                 
@@ -119,7 +121,7 @@ if __name__ == '__main__':
     included = 0
     for i,row in enumerate(reader):
         if row['most_recent']=='True':
-            live_filing_list[row['filing_number']] = row['form_type']
+            live_filing_list[row['filing_number']] = row['year']
             included += 1
 
 
@@ -129,11 +131,13 @@ if __name__ == '__main__':
 
     # set up the writers
     for sked in legal_skeds:
-        outfile = schedule_writer[sked]['outfile']
-        headers = schedule_writer[sked]['headers']
+        for year in YEARS:
 
-        schedule_writer[sked]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
-        schedule_writer[sked]['writer'].writeheader()
+            outfile = schedule_writer[sked]['outfile'] % year
+            headers = schedule_writer[sked]['headers'] % year
+
+            schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
+            schedule_writer[sked][year]['writer'].writeheader()
 
     # num processed 
     
@@ -178,14 +182,15 @@ if __name__ == '__main__':
         filepath = filingdict['filepath']
         datestring = filingdict['datestring']
 
+        year = none
         try:
-            live_filing_list[str(filenumber)]
+            year = live_filing_list[str(filenumber)]
             #print("* Found live %s - date: %s" % (filenumber, datestring))
         except KeyError:
             #print("  Not live for %s" % filenumber)
             continue
 
-        result = readfile( "/" + filepath, schedule_writer)
+        result = readfile( "/" + filepath, schedule_writer, year)
         #result = readfile( filepath, schedule_writer)
 
         formtypecount.update(result)
