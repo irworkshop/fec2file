@@ -9,7 +9,7 @@ from collections import OrderedDict
 ## before processing 
 
 
-infilepath = "headers/headers1.csv"
+infilepath = HEADER_DUMP_FILE
 
 outfileheaders = ['filing_number', 'is_superseded', 'amended_by', 'last_amendment', 'report_number', 'filer_committee_id_number', 'form_type', 'date_signed', 'coverage_from_date', 'coverage_through_date', 'comment']
 outfile =  open(AMENDED_HEADER_FILE, 'w')

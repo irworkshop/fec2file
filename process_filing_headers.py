@@ -37,8 +37,6 @@ def readfile(filepath, writer):
         results["amends"] = original_report_number
         #print("Found amended filing %s amends %s # %s" % (file_number, original_report_number, report_number))
 
-
-
     secondlineparsed = fecfile.parse_line(secondline, version)
     #print(secondlineparsed)
     results["form_type"] = secondlineparsed.get('form_type', '')

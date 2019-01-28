@@ -44,8 +44,7 @@ Writes a .csv file to settings.HEADER\_DUMP\_FILE, by default headers/headers\_r
 `$ python amend_headers.py`
 
 
-
-writes output to settings.AMENDED_HEADER_FILE. It includes  filing_number,is_superseded,amended_by,last_amendment,report_number,filer_committee_id_number,form_type,date_signed,comment. 
+writes output to settings.AMENDED\_HEADER\_FILE. It includes  filing\_number,is\_superseded,amended\_by,last_amendment,report\_number,filer\_committee\_id\_number,form\_type,date\_signed,comment. 
 
 Filings that are not superseded by a later amendment are included, whereas those that have been replaced are not. 
 
@@ -75,7 +74,19 @@ The raw files include committee ids, but it's helpful for users to have the comm
 
 Overall this process is very similar to dealing with the electronic filings, but amendments are more complex because A. they can be either full or partial replacements, although there's no indication given in the filing as to which they are and B. there's no listing of the "original" filing being fixed. 
 
-### TKTK
+### 1. Get zipped paper .fec files 
+
+Very similar to the script to retrieve electronic filings. 
+
+`$ python get_daily_paper_filings.py`
+
+
+retrieves the zipfiles that are listed in the metadata/paper\_zipfiles.txt (or set in settings.PAPER\_ZIPFILE\_MANIFEST). This may take a while; you may want to run it as `nohup  python get_daily_paper_filings.py &` to detach from the process on linux and make sure it keeps running if your connection goes. 
+
+Because there are some random names it's often easier to just grab this from the live ftp site and paste it into the manifest file. 
+
+The zipfiles are downloaded into settings.PAPER\_ZIPDIR, which by default is zip/paper/
+
 
 
 # Processing logic
