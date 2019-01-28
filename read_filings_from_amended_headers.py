@@ -129,14 +129,14 @@ if __name__ == '__main__':
 
         if form_type in main_forms and row['is_superseded'] == 'False':
             year_raw = row.get('coverage_from_date')
-            print("%s" % year_raw)
+            #print("%s" % year_raw)
             year = None
             if year_raw:
                 year_left = year_raw[:4]
                 try:
                     year = int(year_left)
                     row['year'] = year
-                    print("Found year %s from %s" % (year, year_raw))
+                    #print("Found year %s from %s" % (year, year_raw))
                 except (ValueError, TypeError) as e:
                     print("Missing year in %s" % row)
                     year_missing += 1
@@ -152,7 +152,6 @@ if __name__ == '__main__':
     print("Read %s rows and hashed %s in %s" % (max, included, hash_done-start))
     print("Years missing: %s" % year_missing)
 
-    assert False
 
 
     # set up the writers

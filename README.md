@@ -43,8 +43,7 @@ Writes a .csv file to settings.HEADER\_DUMP\_FILE, by default headers/headers\_r
 
 `$ python amend_headers.py`
 
-
-writes output to settings.AMENDED\_HEADER\_FILE. It includes  filing\_number,is\_superseded,amended\_by,last_amendment,report\_number,filer\_committee\_id\_number,form\_type,date\_signed,comment. 
+Reads from settings.HEADER\_DUMP\_FILE and writes output to settings.AMENDED\_HEADER\_FILE. It includes  filing\_number,is\_superseded,amended\_by,last_amendment,report\_number,filer\_committee\_id\_number,form\_type,date\_signed,coverage\_from\_date,coverage\_through\_date, comment. 
 
 Filings that are not superseded by a later amendment are included, whereas those that have been replaced are not. 
 
