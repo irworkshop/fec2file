@@ -29,7 +29,6 @@ HEADER_PAPER_DUMP_FILE = 'headers/paper_headers_raw.csv'
 AMENDED_HEADER_FILE = 'headers/headers_amended.csv'
 AMENDED_PAPER_HEADER_FILE = 'headers/paperheaders_amended.csv'
 
-
 SCHEDULE_A_OUTFILE = "schedules/ScheduleA-%s.csv"
 SCHEDULE_A_PAPER_OUTFILE = "schedules/ScheduleA-%s-paper.csv"
 

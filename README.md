@@ -113,6 +113,9 @@ To extract the most complete record of campaign finance available, it is necessa
 
 This only became possible around 2015, when the FEC began releasing the .fec files of submissions originally made on paper. Prior to then, complete address information was only available on electronic filings. 
 
+### PAC-to-PAC money shows up in two places
+
+The FEC's bulk releases show PAC-to-PAC donations in a single file, these contributions show up in two places here. The donating PAC reports the money as an expenditure on Schedule B and the receiving PAC reports the money as a receipt on Schedule A. 
 
 ### Periodic versus ephemeral filngs
 
@@ -144,6 +147,8 @@ Paper filings are more of a challenge because 1. they are not required to *fully
 This library assumes that multiple filings from the same committee covering the same time period are amendments. 
 
 To differentiate between full and partial amendments, this library only considers amendments with 10 lines or more and 80% of the number of lines of the original to be complete replacements. This means that a small number of reports may have out of date details, although most amendments introduce relatively few changes. 
+
+![Amendment histogram](https://publicaccountability.s3.amazonaws.com/histogram.png)
 
 
 ### Caveats
