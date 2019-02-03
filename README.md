@@ -125,7 +125,7 @@ To extract the most complete record of campaign finance available, it is necessa
 
 ### PAC-to-PAC money shows up in two places
 
-The FEC's bulk releases show PAC-to-PAC donations in a single file, these contributions show up in two places here. The donating PAC reports the money as an expenditure on Schedule B and the receiving PAC reports the money as a receipt on Schedule A. 
+The FEC's bulk "datailed" release show PAC-to-PAC donations in a single file, but these transactions actually are reported in two places: by the giving PAC (on schedule B) and the receiving PAC (schedule A). 
 
 ### Periodic versus ephemeral filngs
 
