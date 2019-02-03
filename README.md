@@ -88,7 +88,7 @@ The zipfiles are downloaded into settings.PAPER\_ZIPDIR, which by default is zip
 
 ### 2. Unzip the files
 
-`$ python unzip_filings.py`
+`$ python unzip_paper_filings.py`
 
 This just executes the unzip command using an old school os.system call, there's doubtless a better approach to this. 
 
@@ -99,19 +99,29 @@ This just executes the unzip command using an old school os.system call, there's
 Writes a .csv file to settings.HEADER\_PAPER\_DUMP\_FILE, by default headers/paper\_headers\_raw.csv. 
 
 
+### 4. Figure out which amendments to include or not
+
+`$ python amend_paper_headers.py`
+
+Reads from settings.HEADER\_PAPER\_DUMP\_FILE and writes output to settings.AMENDED\_HEADER\_FILE. It includes  filing\_number,is\_superseded,amended\_by,last_amendment,report\_number,filer\_committee\_id\_number,form\_type,date\_signed,coverage\_from\_date,coverage\_through\_date, comment. It also has file\_size and file\_linecount
+
+Filings that are not superseded by a later amendment are included, whereas those that have been replaced are not. The logic of this is more complex, see the processing logic section below. 
+ 
+
+
+
 # Processing logic
 
 ### Overview
 
-The FEC predates electronic recordkeeping, and many of it's regulations are aimed at insuring there exists a complete record of campaign transactions. While the FEC has done a great job at making data available electronically, there are some limitations to the public release.
+The FEC makes a wide variet of data available in bulk, but there are some limitations to the public release files.
 
-FEC's bulk releases do not include the street addresses of campaign donors and contractors. This restriction applies to any downloads from the site, with the exception of the original filings received. This is a nod to the law: it's illegal to collect address information from campaign donors in order to make mailing lists of your own. 
+These downloads not include the street addresses of campaign donors and contractors. It's illegal to collect address information from campaign donors in order to make mailing lists of your own. 
 
 For journalists, investigators and citizens interested in tracking influence, however, addresses can provide critical confirmation of a linkage between corporate entities. These addresses can be found on the original filings displayed on FEC's web site, but this is of little use if you don't know which filing to reference. 
 
-To extract the most complete record of campaign finance available, it is necessary to download all of the originally submitted filings and process them--essentially what the FEC does in order to produce the bulk downloads. 
+To extract the most complete record of campaign finance available, it is necessary to download all of the originally submitted filings and process them. This is, in essence, what FEC does to create the bulk files, although their process is more complex.
 
-This only became possible around 2015, when the FEC began releasing the .fec files of submissions originally made on paper. Prior to then, complete address information was only available on electronic filings. 
 
 ### PAC-to-PAC money shows up in two places
 
