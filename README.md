@@ -108,24 +108,39 @@ Reads from settings.HEADER\_PAPER\_DUMP\_FILE and writes output to settings.AMEN
 Filings that are not superseded by a later amendment are included, whereas those that have been replaced are not. The logic of this is more complex, see the processing logic section below. 
  
 
+### 5. Read most recent filings 
+
+Read the most recent filings from step 4's output. 
+
+`$python read_paper_filings_from_amended_headers.py`
+
+
+### 6. Add committee / candidate names
+
+The schedule output files include committee ids, but it's helpful for users to have the committee and candidate name (if applicable). This annotates the schedule a and b .csv files with this info. It adds to the overall file size, so it may not be helpful for all uses. 
+
+
+ TK:  `$python match_skeds_to_committees.py` 
+ 
+This reads the output scheduleX-YYYY.csv files and outputs them as ScheduleX-YYYY_annotated.csv. Note that these files are even bigger than the originals. 
 
 
 # Processing logic
 
 ### Overview
 
-The FEC makes a wide variet of data available in bulk, but there are some limitations to the public release files.
+The FEC makes a wide variety of data available in bulk, but there are some limitations to the public release files.
 
-These downloads not include the street addresses of campaign donors and contractors. It's illegal to collect address information from campaign donors in order to make mailing lists of your own. 
+These downloads do not include the street addresses of campaign donors and contractors. It's illegal to collect address information from campaign donors in order to make mailing lists of your own. 
 
 For journalists, investigators and citizens interested in tracking influence, however, addresses can provide critical confirmation of a linkage between corporate entities. These addresses can be found on the original filings displayed on FEC's web site, but this is of little use if you don't know which filing to reference. 
 
-To extract the most complete record of campaign finance available, it is necessary to download all of the originally submitted filings and process them. This is, in essence, what FEC does to create the bulk files, although their process is more complex.
+To extract the most complete record of campaign finance available, it is necessary to download all of the originally submitted filings and process them. This is, in essence, what the FEC does to create the bulk files, although their process is more complex.
 
 
 ### PAC-to-PAC money shows up in two places
 
-The FEC's bulk "datailed" release show PAC-to-PAC donations in a single file, but these transactions actually are reported in two places: by the giving PAC (on schedule B) and the receiving PAC (schedule A). 
+The FEC's bulk "detailed" release discloses PAC-to-PAC donations in a single file, but these transactions actually are reported in two places: by the giving PAC (on schedule B) and the receiving PAC (schedule A). One use of this data, therefore, is for comparing what PAC's say they donated to candidates versus what candidates say they received. This kind of [discrepancy](https://www.cutimes.com/2014/01/10/culac-contribution-missing/?slreturn=20190105190510) may suggest additional problems. 
 
 ### Periodic versus ephemeral filngs
 
