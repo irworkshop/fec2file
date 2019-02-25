@@ -142,7 +142,7 @@ To extract the most complete record of campaign finance available, it is necessa
 
 The FEC's bulk "detailed" release discloses PAC-to-PAC donations in a single file, but these transactions actually are reported in two places: by the giving PAC (on schedule B) and the receiving PAC (schedule A). One use of this data, therefore, is for comparing what PAC's say they donated to candidates versus what candidates say they received. This kind of [discrepancy](https://www.cutimes.com/2014/01/10/culac-contribution-missing/?slreturn=20190105190510) may suggest additional problems. 
 
-### Periodic versus ephemeral filngs
+### Periodic versus ephemeral filings
 
 US election law requires "independent" election spenders to report large expenditures ahead of an election within 24 or 48 hours; candidates must also report large contributions received in the last 20 days of an election within 2 days. 
 
@@ -159,11 +159,10 @@ US campaign finance rules allow filers to amend their filings as many times as t
 
 Processing electronic filing amendment is relatively straightforward, because the file submission format requires amended filings to 1. provide the id of the filing they are amending and 2. replace the filing completely. 
 
-The basic approach we are taking is to identify all of the "most recent" electronic filings, and export the data from those filings only. 
 
 It's important to note that there's some ambiguity about how "chains" of amendments get listed. The logic used here is that if 2 amends 1 and 3 amends 2, filing 3 will sometimes list 1 or 2.  
 
-Another way of thinking about these filings is whether a report is the "most recent" version of an electronic filing. This works because FEC requires filers to submit an *complete replacement* of the original filing in the amendment.
+The basic approach we are taking is to identify all of the "most recent" electronic filings, and export the data from those filings only. This works because FEC requires filers to submit an *complete replacement* of the original filing in the amendment.
 
 ### Paper filings
 

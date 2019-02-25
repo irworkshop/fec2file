@@ -6,22 +6,19 @@ from collections import OrderedDict
 import os
 
 
-## this actually shouldn't be an ordered dict
-## because it's only ordered by day in the original
-## and so should be sorted by numeric filing number
-## before processing 
-
-
 
 infilepath = "headers/paper_headers_raw.csv"
+print("Reading filing header data from file %s" % infilepath)
+
 
 outfileheaders = ['filing_number', 'file_size', 'file_linecount', 'size_ratio', 'line_ratio', 'is_original', 'most_recent', 'is_amendment', 'original_id', 'filer_committee_id_number', 'form_type', 'received_date', 'batch_number', 'date_signed', 'coverage_from_date', 'coverage_through_date']
 outfile =  open(AMENDED_PAPER_HEADER_FILE, 'w')
+print("Writing output to %s" % AMENDED_PAPER_HEADER_FILE)
 writer = csv.DictWriter(outfile, fieldnames=outfileheaders, extrasaction='ignore')
 writer.writeheader()
 
 filing_list = []
-print("Reading filing header data from file %s" % infilepath)
+
 with open(infilepath, 'r') as infile:
     dw = csv.DictReader(infile)
 
@@ -43,20 +40,16 @@ with open(infilepath, 'r') as infile:
             }
         filing_list.append(this_filing)
 
-
-
 # sort the filings
 sorted_filings = sorted(filing_list, key=lambda t: int(t['filing_number']))
 
 filing_key = "%s:%s:%s" 
-
 
 original_filing_dict = {}
 
 for i, filing in enumerate(sorted_filings):
     #print("handling filing %s" % filing)
     if filing['form_type'].startswith("F3"):
-
 
         from_date = filing['coverage_from_date'][:10]
         through_date = filing['coverage_through_date'][:10]
@@ -120,10 +113,6 @@ for i, filing in enumerate(sorted_filings):
             sorted_filings[i]['is_original'] = True
             sorted_filings[i]['is_amendment'] = False
             sorted_filings[i]['original_id'] = filing['filing_number']
-
-            
-
-
 
 
 

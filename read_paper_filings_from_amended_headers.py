@@ -121,8 +121,31 @@ if __name__ == '__main__':
     included = 0
     for i,row in enumerate(reader):
         if row['most_recent']=='True':
-            live_filing_list[row['filing_number']] = row['year']
-            included += 1
+
+
+
+            year_raw = row.get('coverage_from_date')
+            #print("%s" % year_raw)
+            year = None
+            if year_raw:
+                year_left = year_raw[:4]
+                try:
+                    year = int(year_left)
+                    row['year'] = year
+                    #print("Found year %s from %s" % (year, year_raw))
+                except (ValueError, TypeError) as e:
+                    print("Missing year in %s" % row)
+                    year_missing += 1
+
+                if year > 2006 and year < 2020:
+
+
+                    print("Included %s" % row)
+                    live_filing_list[row['filing_number']] = row['year']
+                    included += 1
+                else:
+                    print("Excluded %s" % row)
+
 
 
     hash_done = datetime.now()
@@ -134,10 +157,12 @@ if __name__ == '__main__':
         for year in YEARS:
 
             outfile = schedule_writer[sked]['outfile'] % year
-            headers = schedule_writer[sked]['headers'] % year
+            headers = schedule_writer[sked]['headers']
 
+            schedule_writer[sked][year] = {}
             schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
             schedule_writer[sked][year]['writer'].writeheader()
+            print("Writing out %s data to %s" % (year, outfile))
 
     # num processed 
     
@@ -182,12 +207,12 @@ if __name__ == '__main__':
         filepath = filingdict['filepath']
         datestring = filingdict['datestring']
 
-        year = none
+        year = None
         try:
             year = live_filing_list[str(filenumber)]
-            #print("* Found live %s - date: %s" % (filenumber, datestring))
+            print("* Found live %s - date: %s" % (filenumber, datestring))
         except KeyError:
-            #print("  Not live for %s" % filenumber)
+            print("  Not live for %s" % filenumber)
             continue
 
         result = readfile( "/" + filepath, schedule_writer, year)
