@@ -190,9 +190,6 @@ if __name__ == '__main__':
     # Walk the electronic dir and find files. 
     print("Finding local fec files, please be patient")
 
-    print(schedule_writer)
-    assert false
-
     walk_start = datetime.now()
     filesfound = 0
     for root, dirs, files in os.walk(RAW_PAPER_DIR):
