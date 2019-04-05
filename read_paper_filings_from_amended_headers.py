@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
     # set up the writers
     for sked in legal_skeds:
-        if sked = 'F132':
+        if sked == 'F132':
 
                 outfile = schedule_writer[sked]['outfile'] 
                 headers = schedule_writer[sked]['headers']
