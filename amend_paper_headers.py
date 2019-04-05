@@ -49,7 +49,7 @@ original_filing_dict = {}
 
 for i, filing in enumerate(sorted_filings):
     #print("handling filing %s" % filing)
-    if filing['form_type'].startswith("F3") or  filing['form_type'].startswith("F13"):
+    if filing['form_type'].startswith("F3") or filing['form_type'].startswith("F13"):
 
         from_date = filing['coverage_from_date'][:10]
         through_date = filing['coverage_through_date'][:10]
