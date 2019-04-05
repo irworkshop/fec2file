@@ -12,7 +12,7 @@ from schedule_headers import *
 from settings import *
 
 # process these
-main_forms = ['F3X', 'F3', 'F3P']
+# main_forms = ['F3X', 'F3', 'F3P']
 
 # file on skeds a, b, c, d, e
 # F3X - unaffiliated committee
@@ -27,7 +27,7 @@ extra_forms = ['F3L', 'F4']
 
 
 # would like to add these but they use weird skeds
-other_forms = [ 'F5', 'F7', 'F13'] 
+# other_forms = [ 'F5', 'F7', 'F13'] 
 # F5 noncommittee filers, uses F56/57 
 # F7 communication costs, uses F76
 # F13 inaugural committee, uses F132/F133
@@ -51,6 +51,10 @@ schedule_writer = {
         'headers': SCHEDULE_B_HEADERS,
         'outfile': SCHEDULE_B_PAPER_OUTFILE,
     },
+    'F132':{
+        'headers':SCHEDULE_A_PAPER_HEADERS,
+        'outfile':SCHEDULE_F132_PAPER_OUTFILE,
+    }
 }
 
 def readfile(path_to_file, schedule_writer, year):
@@ -78,7 +82,7 @@ def readfile(path_to_file, schedule_writer, year):
                     continue
                 if not parsed:
                     pass
-                    #print("** not parsed %s" % line)
+                    print("** not parsed %s" % line)
                 else:   
                     # count the form type, if given
                     try:
@@ -94,9 +98,12 @@ def readfile(path_to_file, schedule_writer, year):
                     if form_type.startswith("SA"):
                         schedule_writer['A'][year]['writer'].writerow(parsed)
 
-                    if form_type.startswith("SB"):
+                    elif form_type.startswith("SB"):
                         schedule_writer['B'][year]['writer'].writerow(parsed)
 
+                    elif form_type.startswith("F132"):
+                        remapped = remap_132_to_a(parsed)
+                        schedule_writer['F132']['writer'].writerow(remapped)
 
                 
                 #print("%s %s" % (linecount, parsed))
@@ -154,15 +161,26 @@ if __name__ == '__main__':
 
     # set up the writers
     for sked in legal_skeds:
-        for year in YEARS:
+        if sked = 'F132':
 
-            outfile = schedule_writer[sked]['outfile'] % year
-            headers = schedule_writer[sked]['headers']
+                outfile = schedule_writer[sked]['outfile'] 
+                headers = schedule_writer[sked]['headers']
+                schedule_writer[sked]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
+                schedule_writer[sked]['writer'].writeheader()
+                print("Writing out %s data to %s" % (sked, outfile))
 
-            schedule_writer[sked][year] = {}
-            schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
-            schedule_writer[sked][year]['writer'].writeheader()
-            print("Writing out %s data to %s" % (year, outfile))
+        else:
+            for year in YEARS:
+
+                outfile = schedule_writer[sked]['outfile'] % year
+                headers = schedule_writer[sked]['headers']
+
+                schedule_writer[sked][year] = {}
+                schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
+                schedule_writer[sked][year]['writer'].writeheader()
+                print("Writing out %s data to %s" % (year, outfile))
+
+
 
     # num processed 
     
