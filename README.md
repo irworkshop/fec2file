@@ -117,13 +117,10 @@ Read the most recent filings from step 4's output.
 
 ### 6. Add committee / candidate names
 
-The schedule output files include committee ids, but it's helpful for users to have the committee and candidate name (if applicable). This annotates the schedule a and b .csv files with this info. It adds to the overall file size, so it may not be helpful for all uses. 
+Same script as for electronic filings but with settings for the paper filings.
 
-
- TK:  `$python match_skeds_to_committees.py` 
+ `$python match_paper_skeds_to_committees.py` 
  
-This reads the output scheduleX-YYYY.csv files and outputs them as ScheduleX-YYYY_annotated.csv. Note that these files are even bigger than the originals. 
-
 
 # Processing logic
 

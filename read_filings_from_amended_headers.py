@@ -51,6 +51,10 @@ schedule_writer = {
         'headers': SCHEDULE_B_HEADERS,
         'outfile': SCHEDULE_B_OUTFILE,
     },
+    'F132':{
+        'headers':SCHEDULE_A_HEADERS,
+        'outfile':'F132.csv'
+    }
 }
 
 def readfile(path_to_file, schedule_writer, year):
@@ -78,7 +82,7 @@ def readfile(path_to_file, schedule_writer, year):
                     continue
                 if not parsed:
                     pass
-                    #print("** not parsed %s" % line)
+                    print("** not parsed %s" % line)
                 else:   
                     # count the form type, if given
                     try:
@@ -92,13 +96,24 @@ def readfile(path_to_file, schedule_writer, year):
                     parsed['line_sequence'] = linecount
 
 
+                    print("\t Form type is %s" % form_type)
+
                     if form_type.startswith("SA"):
                         schedule_writer['A'][year]['writer'].writerow(parsed)
 
-                    if form_type.startswith("SB"):
+                    elif form_type.startswith("F132"):
+                        remapped = remap_132_to_a(parsed)
+                        schedule_writer['F132']['writer'].writerow(remapped)
+
+                    elif form_type.startswith("SB"):
                         schedule_writer['B'][year]['writer'].writerow(parsed)
 
+                    else:
+                        print("Ignoring form type %s - filing %s line %s" % (form_type, filenumber, linecount) )
 
+
+                    
+                    
 
                 
                 #print("%s %s" % (linecount, parsed))
