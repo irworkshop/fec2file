@@ -79,12 +79,14 @@ if __name__ == '__main__':
 
 
     outfile =  open(HEADER_PAPER_DUMP_FILE, 'w')
+    print("Writing out to %s" % HEADER_PAPER_DUMP_FILE)
     dw = csv.DictWriter(outfile, fieldnames=MASTER_PAPER_HEADER_ROW, extrasaction='ignore')
     dw.writeheader()
 
-    errorfile = open("header_read_errors.csv")
-    error_writer = csv.DictWriter(errorfile, fieldnames=ERROR_HEADERS, extrasaction='ignore')
-    error_writer.writeheader()
+    #errorfile = open("header_read_errors.csv", 'w')
+    #print("error file %s - headers %s" % (errorfile, ERROR_HEADERS))
+    #error_writer = csv.DictWriter(errorfile, fieldnames=ERROR_HEADERS, extrasaction='ignore')
+    #error_writer.writeheader()
 
     for dirName, subdirList, fileList in os.walk(RAW_PAPER_DIR, topdown=False):
         #print('Found directory: %s' % dirName)
@@ -95,7 +97,9 @@ if __name__ == '__main__':
                 #print("Found file %s" % full_path)
 
                 try:
-                     readfile(full_path, dw, error_writer)
+                     readfile(full_path, dw)
                 except Exception as e:
                     print("-Error in %s: %s" % (full_path, e))
 
+    #errorfile.close()
+    outfile.close()
