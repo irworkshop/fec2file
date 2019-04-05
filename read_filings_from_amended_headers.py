@@ -13,7 +13,7 @@ from schedule_headers import *
 from settings import SCHEDULE_A_OUTFILE, SCHEDULE_B_OUTFILE
 
 # process these
-main_forms = ['F3X', 'F3', 'F3P']
+main_forms = ['F3X', 'F3', 'F3P', 'F13']
 
 # file on skeds a, b, c, d, e
 # F3X - unaffiliated committee
@@ -35,7 +35,7 @@ other_forms = [ 'F5', 'F7', 'F13']
 
 #legal_skeds = ['A', 'B', 'C', 'D']
 
-legal_skeds = ['A', 'B']
+legal_skeds = ['A', 'B','F132']
 
 # To really do sked E we gotta include F57, from the F5's
 

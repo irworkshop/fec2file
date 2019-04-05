@@ -52,7 +52,7 @@ schedule_writer = {
         'outfile': SCHEDULE_B_PAPER_OUTFILE,
     },
     'F132':{
-        'headers':SCHEDULE_A_PAPER_HEADERS,
+        'headers':SCHEDULE_A_HEADERS,
         'outfile':SCHEDULE_F132_PAPER_OUTFILE,
     }
 }
