@@ -53,7 +53,7 @@ schedule_writer = {
     },
     'F132':{
         'headers':SCHEDULE_A_HEADERS,
-        'outfile':'F132.csv'
+        'outfile':SCHEDULE_F132_OUTFILE
     }
 }
 
@@ -103,7 +103,7 @@ def readfile(path_to_file, schedule_writer, year):
 
                     elif form_type.startswith("F132"):
                         remapped = remap_132_to_a(parsed)
-                        schedule_writer['F132']['writer'].writerow(remapped)
+                        schedule_writer['F132'][year]['writer'].writerow(remapped)
 
                     elif form_type.startswith("SB"):
                         schedule_writer['B'][year]['writer'].writerow(parsed)
