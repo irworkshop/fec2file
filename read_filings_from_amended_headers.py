@@ -10,7 +10,7 @@ from collections import Counter, OrderedDict
 import fecfile
 
 from schedule_headers import *
-from settings import SCHEDULE_A_OUTFILE, SCHEDULE_B_OUTFILE
+from settings import SCHEDULE_A_OUTFILE, SCHEDULE_B_OUTFILE, SCHEDULE_F132_OUTFILE
 
 # process these
 main_forms = ['F3X', 'F3', 'F3P', 'F13']
@@ -53,7 +53,7 @@ schedule_writer = {
     },
     'F132':{
         'headers':SCHEDULE_A_HEADERS,
-        'outfile':SCHEDULE_F132_OUTFILE
+        'outfile':SCHEDULE_F132_OUTFILE,
     }
 }
 
