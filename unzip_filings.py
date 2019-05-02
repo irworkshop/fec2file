@@ -4,6 +4,13 @@ from datetime import datetime
 
 from settings import *
 
+
+# only unzip filings from current year
+CURRENT_YEAR = '2019'
+
+# run all years with CURRENT_YEAR = '2'
+
+
 def makedir(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -23,7 +30,7 @@ if __name__ == '__main__':
         raw_name = filing.replace(".zip", "")
         directory_path = RAW_ELECTRONIC_DIR + raw_name
         makedir(directory_path)
-        if '2019' in raw_name:
+        if CURRENT_YEAR in raw_name:
             unzip_cmd = "unzip %s%s -d %s%s/" % (ELECTRONIC_ZIPDIR, filing, RAW_ELECTRONIC_DIR, raw_name)
             print(i)
             print(unzip_cmd)
