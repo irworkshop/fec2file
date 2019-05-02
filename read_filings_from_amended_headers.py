@@ -99,7 +99,7 @@ def readfile(path_to_file, schedule_writer, year):
                     parsed['line_sequence'] = linecount
 
 
-                    print("\t Form type is %s" % form_type)
+                    #print("\t Form type is %s" % form_type)
 
                     if form_type.startswith("SA"):
                         schedule_writer['A'][year]['writer'].writerow(parsed)
