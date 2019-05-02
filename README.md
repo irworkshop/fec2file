@@ -27,6 +27,8 @@ Because there are some random names it's often easier to just grab this from the
 
 The zipfiles are downloaded into settings.ELECTRONIC\_ZIPDIR, which by default is zip/electronic/
 
+The zipfile source is [here](https://cg-519a459a-0ea3-42c2-b7bc-fa1143481f74.s3-us-gov-west-1.amazonaws.com/bulk-downloads/index.html?prefix=bulk-downloads/electronic/)
+
 ### 2. Unzip the files
 
 `$ python unzip_filings.py`

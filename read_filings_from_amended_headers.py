@@ -70,6 +70,8 @@ def readfile(path_to_file, schedule_writer, year):
         for line in file:
             linecount+=1
             if version is None:
+                # This will fail for versions prior to V3-ish, where headers were multiline
+                # That was phased our around 2001, according to E. Sonderegger
                 results = fecfile.parse_header(line)
                 header = results[0]
                 version = results[1]
