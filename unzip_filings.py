@@ -36,4 +36,4 @@ if __name__ == '__main__':
             print(unzip_cmd)
             os.system(unzip_cmd)
         else:
-            print("Skipping directory %s" % ELECTRONIC_ZIPDIR)
+            print("Skipping zipfile %s" % raw_name)

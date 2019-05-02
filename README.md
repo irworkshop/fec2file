@@ -19,9 +19,9 @@ You may want to set the following variables in a local\_settings.py file, which 
 
 ### 1. Get zipped electronic .fec files 
 
-`$ python get_daily_zipfiles.py`
+`$ python get_daily_filings.py`
 
-retrieves the zipfiles that are listed in the metadata/electronic\_zipfiles.txt (or set in settings.ELECTRONIC\_ZIPFILE\_MANIFEST). This may take a while; you may want to run it as `nohup  python get_daily_zipfiles.py &` to detach from the process on linux and make sure it keeps running if your connection goes. 
+retrieves the zipfiles that are listed in the metadata/electronic\_zipfiles.txt (or set in settings.ELECTRONIC\_ZIPFILE\_MANIFEST). This may take a while; you may want to run it as `nohup  python get_daily_filings.py &` to detach from the process on linux and make sure it keeps running if your connection goes. 
 
 Because there are some random names it's often easier to just grab this from the live ftp site and paste it into the manifest file. 
 
