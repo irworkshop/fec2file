@@ -82,7 +82,7 @@ if __name__ == '__main__':
     print("Writing out to %s" % HEADER_PAPER_DUMP_FILE)
     dw = csv.DictWriter(outfile, fieldnames=MASTER_PAPER_HEADER_ROW, extrasaction='ignore')
     dw.writeheader()
-    print("Writing output to %s" % HEADER_DUMP_FILE)
+    print("Writing output to %s" % HEADER_PAPER_DUMP_FILE)
 
 
     #errorfile = open("header_read_errors.csv", 'w')
