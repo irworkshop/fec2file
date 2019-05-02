@@ -15,7 +15,7 @@ if __name__ == '__main__':
     for raw_row in infile:
         row = raw_row.replace("\n","")
         if row.endswith(".zip"):
-            print("'%s'" % row)
+            #print("'%s'" % row)
             filings.append(row)
 
 
@@ -23,9 +23,10 @@ if __name__ == '__main__':
         raw_name = filing.replace(".zip", "")
         directory_path = RAW_ELECTRONIC_DIR + raw_name
         makedir(directory_path)
-
-        unzip_cmd = "unzip %s%s -d %s%s/" % (ELECTRONIC_ZIPDIR, filing, RAW_ELECTRONIC_DIR, raw_name)
-        print(i)
-        print(unzip_cmd)
-        os.system(unzip_cmd)
-
+        if '2019' in raw_name:
+            unzip_cmd = "unzip %s%s -d %s%s/" % (ELECTRONIC_ZIPDIR, filing, RAW_ELECTRONIC_DIR, raw_name)
+            print(i)
+            print(unzip_cmd)
+            os.system(unzip_cmd)
+        else:
+            print("Skipping directory %s" % ELECTRONIC_ZIPDIR)
