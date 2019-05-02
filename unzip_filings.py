@@ -31,7 +31,7 @@ if __name__ == '__main__':
         directory_path = RAW_ELECTRONIC_DIR + raw_name
         makedir(directory_path)
         if CURRENT_YEAR in raw_name:
-            unzip_cmd = "unzip %s%s -d %s%s/" % (ELECTRONIC_ZIPDIR, filing, RAW_ELECTRONIC_DIR, raw_name)
+            unzip_cmd = "unzip -o %s%s -d %s%s/" % (ELECTRONIC_ZIPDIR, filing, RAW_ELECTRONIC_DIR, raw_name)
             print(i)
             print(unzip_cmd)
             os.system(unzip_cmd)
