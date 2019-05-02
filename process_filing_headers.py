@@ -54,6 +54,7 @@ if __name__ == '__main__':
     outfile =  open(HEADER_DUMP_FILE, 'w')
     dw = csv.DictWriter(outfile, fieldnames=MASTER_HEADER_ROW, extrasaction='ignore')
     dw.writeheader()
+    print("Writing output to %s" % outfile)
 
     errorfile = open("header_read_errors.csv", 'w')
     error_writer = csv.DictWriter(errorfile, fieldnames=ERROR_HEADERS, extrasaction='ignore')
