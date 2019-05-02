@@ -85,7 +85,7 @@ def readfile(path_to_file, schedule_writer, year):
                     continue
                 if not parsed:
                     pass
-                    print("** not parsed %s" % line)
+                    #print("** not parsed %s" % line)
                 else:   
                     # count the form type, if given
                     try:
@@ -112,7 +112,8 @@ def readfile(path_to_file, schedule_writer, year):
                         schedule_writer['B'][year]['writer'].writerow(parsed)
 
                     else:
-                        print("Ignoring form type %s - filing %s line %s" % (form_type, filenumber, linecount) )
+                        pass
+                        #print("Ignoring form type %s - filing %s line %s" % (form_type, filenumber, linecount) )
 
 
                     
