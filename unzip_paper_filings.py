@@ -4,6 +4,14 @@ from datetime import datetime
 
 from settings import *
 
+
+
+# only unzip filings from current year
+CURRENT_YEAR = '2019'
+
+# run all years with CURRENT_YEAR = '2'
+
+
 def makedir(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -24,8 +32,12 @@ if __name__ == '__main__':
         directory_path = RAW_PAPER_DIR + raw_name
         makedir(directory_path)
 
-        unzip_cmd = "unzip %s%s -d %s%s/" % (PAPER_ZIPDIR, filing, RAW_PAPER_DIR, raw_name)
-        print(i)
-        print(unzip_cmd)
-        os.system(unzip_cmd)
+        if CURRENT_YEAR in raw_name:
+
+            unzip_cmd = "unzip -o %s%s -d %s%s/" % (PAPER_ZIPDIR, filing, RAW_PAPER_DIR, raw_name)
+            print(i)
+            print(unzip_cmd)
+            os.system(unzip_cmd)
+        else:
+            print("Skipping zipfile %s" % raw_name)
 
