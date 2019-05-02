@@ -39,7 +39,7 @@ legal_skeds = ['A', 'B','F132']
 
 # To really do sked E we gotta include F57, from the F5's
 
-# YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+ALL_YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
 YEARS = [2018, 2019]
 
 
@@ -159,9 +159,9 @@ if __name__ == '__main__':
                     print("Missing year in %s" % row)
                     year_missing += 1
 
-                if year > 2006 and year < 2020:
+                if year in YEARS:
 
-                    #print("Got form to process %s %s" % (row['filing_number'], row['form_type']))
+                    print("Got form to process year=%s %s %s" % (year, row['filing_number'], row['form_type']))
                     live_filing_list[row['filing_number']] = year
                     included += 1
 
