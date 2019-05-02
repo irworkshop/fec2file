@@ -39,7 +39,8 @@ legal_skeds = ['A', 'B','F132']
 
 # To really do sked E we gotta include F57, from the F5's
 
-YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+# YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+YEARS = [2018, 2019]
 
 
 schedule_writer = {
