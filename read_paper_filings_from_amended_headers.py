@@ -144,14 +144,15 @@ if __name__ == '__main__':
                     print("Missing year in %s" % row)
                     year_missing += 1
 
-                if year > 2006 and year < 2020:
+                if year in YEARS:
 
 
                     print("Included %s" % row)
                     live_filing_list[row['filing_number']] = row['year']
                     included += 1
                 else:
-                    print("Excluded %s" % row)
+                    pass
+                    #print("Excluded %s" % row)
 
 
 
