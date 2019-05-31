@@ -118,6 +118,7 @@ def process_sked_F132(committeedict, candidatedict,  year, sked132_infile, sked1
     dw.writeheader()
 
     infile = open(sked132_infile % year, 'r')
+    print("Infile for F132: %s " % infile )
     reader = csv.DictReader(infile)
 
     for (i,row) in enumerate(reader):
@@ -311,7 +312,7 @@ if __name__ == '__main__':
     committeedict = get_committee_dict()
     candidatedict = get_candidate_dict()
 
-    YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
+    YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
     # YEARS = [2018, 2019]
 
