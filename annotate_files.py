@@ -316,11 +316,13 @@ if __name__ == '__main__':
     # YEARS = [2018, 2019]
 
     for year in YEARS: 
-        print("Running year %s" % year)
-        process_sked_a(committeedict, candidatedict, year, SKEDA_PROCESSED, SKEDA_OUTFILE)
-        process_sked_a(committeedict, candidatedict, year, SKEDA_PAPER_PROCESSED, SKEDA_PAPER_OUTFILE)
-        process_sked_b(committeedict, candidatedict, year, SKEDB_PROCESSED, SKEDB_OUTFILE)
-        process_sked_a(committeedict, candidatedict, year, SKEDB_PAPER_PROCESSED, SKEDB_PAPER_OUTFILE)
+        if year in [2018, 2019]: 
+
+            print("Running year %s" % year)
+            process_sked_a(committeedict, candidatedict, year, SKEDA_PROCESSED, SKEDA_OUTFILE)
+            process_sked_a(committeedict, candidatedict, year, SKEDA_PAPER_PROCESSED, SKEDA_PAPER_OUTFILE)
+            process_sked_b(committeedict, candidatedict, year, SKEDB_PROCESSED, SKEDB_OUTFILE)
+            process_sked_a(committeedict, candidatedict, year, SKEDB_PAPER_PROCESSED, SKEDB_PAPER_OUTFILE)
 
         # based on filing research; Obama 08/12 filed electronically; Trump 16 filed on paper
         if year in [2008, 2012]: 
