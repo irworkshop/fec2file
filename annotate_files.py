@@ -192,11 +192,12 @@ def process_sked_a(committeedict, candidatedict,  year, skeda_infile, skeda_outf
         CMTE_NAME = ''
         CMTE_ID = row['filer_committee_id_number']
 
-        raw_year = row['contribution_date']
+        
         year = 0
         try:
+            raw_year = row['contribution_date']
             year = int(raw_year[:4])
-        except ValueError:
+        except:
             #print("no year in %s line %s: %s" % (row['filing_number'], row['line_sequence'], raw_year))
             continue
 
