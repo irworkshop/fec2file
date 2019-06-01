@@ -313,9 +313,9 @@ if __name__ == '__main__':
     committeedict = get_committee_dict()
     candidatedict = get_candidate_dict()
 
-    YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+    #YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
-    # YEARS = [2018, 2019]
+    YEARS = [2019,]
 
     for year in YEARS: 
         if year in [2018, 2019]: 
