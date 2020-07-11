@@ -29,7 +29,7 @@ SKEDB_RESULT_HEADERS = SKEDB_HEADERS + ['year', 'CMTE_NM', 'CMTE_ST1','CMTE_ST2'
 COMMITTEE_DICT_KEY = "%s-%s" 
 CANDIDATE_DICT_KEY = "%s-%s" 
 
-MIN_YEAR = 2007
+MIN_YEAR = 2019
 
 def dictify_row(line, headers):
     line = line.rstrip("\n")
@@ -236,7 +236,7 @@ if __name__ == '__main__':
     # YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
     #YEARS = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
-    YEARS = [2018, 2019]
+    YEARS = [2019,2020]
 
     for year in YEARS: 
         process_sked_a(committeedict, candidatedict, year)
