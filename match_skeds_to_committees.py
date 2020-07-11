@@ -5,8 +5,8 @@ import settings
 
 
 
-COMMITTEE_FILES = ['data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
-CANDIDATE_FILES = ['data/18/cn.txt', 'data/16/cn.txt', 'data/14/cn.txt', 'data/12/cn.txt', 'data/10/cn.txt', 'data/08/cn.txt']
+COMMITTEE_FILES = ['data/20/cm.txt', 'data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
+CANDIDATE_FILES = ['data/20/cn.txt', 'data/18/cn.txt', 'data/16/cn.txt', 'data/14/cn.txt', 'data/12/cn.txt', 'data/10/cn.txt', 'data/08/cn.txt']
 
 SKEDA_PROCESSED = settings.SCHEDULE_A_OUTFILE 
 SKEDA_OUTFILE = SKEDA_PROCESSED.replace(".csv", "_annotated.csv")
