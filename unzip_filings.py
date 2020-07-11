@@ -6,10 +6,10 @@ from settings import *
 
 
 # only unzip filings from current year
-CURRENT_YEAR = '2019'
+#CURRENT_YEAR = '2019'
 
 # run all years with CURRENT_YEAR = '2'
-
+CURRENT_YEAR = '2'
 
 def makedir(directory):
     if not os.path.exists(directory):
