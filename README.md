@@ -177,3 +177,42 @@ To differentiate between full and partial amendments, this library only consider
 ### Caveats
 
 This approach was originally developed to support comprehensive search of this data rather than the ability to sum it. Because of the possible errors introduced, especially as detailed in the paper amendment processing section above, we urge users to treat this data as approximate, and consult other sources for more precise numbers: including the FEC's web site, the Center for Responsive Politics or the National Institute for Money in State Politics. 
+
+
+###
+
+updates:
+
+$ get_daily_filings.py
+$ get_daily_paper_filings.py
+
+
+
+$ python unzip_filings.py
+$ python unzip_paper_filings.py
+
+$ python process_filing_headers.py
+
+--
+
+Writing output to headers/headers_raw.csv
+error reading /data/fecfilings/electronic/20190429/1329024.fec: invalid literal for int() with base 10: '1225248d'
+error reading /data/fecfilings/electronic/20190208/1315131.fec: invalid literal for int() with base 10: '1312248*BD3773827d'
+error reading /data/fecfilings/electronic/20190129/1308726.fec: invalid literal for int() with base 10: '1303366BD52a'
+
+
+python process_paper_filing_headers.py
+
+python amend_headers.py; echo $'\a'
+python amend_paper_headers.py; echo $'\a'
+
+-- did it work ?
+
+python read_paper_filings_from_amended_headers.py; echo $'\a'
+python read_filings_from_amended_headers.py; echo $'\a'
+
+
+--> at this point the file should be in: 
+
+$python match_skeds_to_committees.py
+$python match_paper_skeds_to_committees.py
