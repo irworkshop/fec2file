@@ -5,8 +5,8 @@ import settings
 
 
 
-COMMITTEE_FILES = ['data/20/cm.txt', 'data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
-CANDIDATE_FILES = ['data/20/cn.txt', 'data/18/cn.txt', 'data/16/cn.txt', 'data/14/cn.txt', 'data/12/cn.txt', 'data/10/cn.txt', 'data/08/cn.txt']
+COMMITTEE_FILES = ['data/22/cm.txt', 'data/20/cm.txt', 'data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
+CANDIDATE_FILES = ['data/22/cn.txt', 'data/20/cn.txt', 'data/18/cn.txt', 'data/16/cn.txt', 'data/14/cn.txt', 'data/12/cn.txt', 'data/10/cn.txt', 'data/08/cn.txt']
 
 SKEDA_PROCESSED = settings.SCHEDULE_A_OUTFILE 
 SKEDA_OUTFILE = SKEDA_PROCESSED.replace(".csv", "_annotated.csv")
@@ -29,7 +29,7 @@ SKEDB_RESULT_HEADERS = SKEDB_HEADERS + ['year', 'CMTE_NM', 'CMTE_ST1','CMTE_ST2'
 COMMITTEE_DICT_KEY = "%s-%s" 
 CANDIDATE_DICT_KEY = "%s-%s" 
 
-MIN_YEAR = 2019
+MIN_YEAR = 2020
 
 def dictify_row(line, headers):
     line = line.rstrip("\n")
@@ -236,7 +236,7 @@ if __name__ == '__main__':
     # YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
     #YEARS = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
-    YEARS = [2019,2020]
+    YEARS = [2019,2020,2021]
 
     for year in YEARS: 
         process_sked_a(committeedict, candidatedict, year)
