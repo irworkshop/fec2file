@@ -76,6 +76,8 @@ This reads the output scheduleX-YYYY.csv files and outputs them as ScheduleX-YYY
 
 ## B. processing paper zipfiles
 
+Paper filing has become much less common--see the [requirements for filing on paper.](https://www.fec.gov/help-candidates-and-committees/filing-reports/electronic-filing/)
+
 Overall this process is very similar to dealing with the electronic filings, but amendments are more complex because A. they can be either full or partial replacements, although there's no indication given in the filing as to which they are and B. there's no listing of the "original" filing being fixed. 
 
 ### 1. Get zipped paper .fec files 
