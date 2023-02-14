@@ -19,9 +19,11 @@ You may want to set the following variables in a local\_settings.py file, which 
 
 ### 1. Get zipped electronic .fec files 
 
-`$ python get_daily_filings.py`
+`$ nohup python get_daily_filings.py &`
 
-retrieves the zipfiles that are listed in the metadata/electronic\_zipfiles.txt (or set in settings.ELECTRONIC\_ZIPFILE\_MANIFEST). This may take a while; you may want to run it as `nohup  python get_daily_filings.py &` to detach from the process on linux and make sure it keeps running if your connection goes. 
+Retrieves the zipfiles that are listed in the metadata/electronic\_zipfiles.txt (or set in settings.ELECTRONIC\_ZIPFILE\_MANIFEST). 
+
+This may take a while; using `nohup  python get_daily_filings.py` allows the process to continue on the server if our connection dies; the `&` detaches the terminal from the window. You can see the output in `nohup.out` as it runs with `tail -f nohup.out`.
 
 Because there are some random names it's often easier to just grab this from the live ftp site and paste it into the manifest file. 
 
@@ -31,13 +33,14 @@ The zipfile source is [here](https://cg-519a459a-0ea3-42c2-b7bc-fa1143481f74.s3-
 
 ### 2. Unzip the files
 
-`$ python unzip_filings.py`
+`$ nohup python unzip_filings.py &`
 
-This just executes the unzip command using an old school os.system call, there's doubtless a better approach to this. 
+This just executes the unzip command using an old school os.system call, there's doubtless a better approach to this. This takes up a lotta space; over 100GB for the 21/22 cycle.
 
 ### 3. Extract the headers
+set the START_YEAR = DDDD in process_filing_headers.py before we run it, below. 
 
-`$ python process_filing_headers.py`
+`$nohup python process_filing_headers.py &`
 
 Writes a .csv file to settings.HEADER\_DUMP\_FILE, by default headers/headers\_raw.csv. 
 
@@ -72,6 +75,8 @@ This reads the output scheduleX-YYYY.csv files and outputs them as ScheduleX-YYY
 
 
 ## B. processing paper zipfiles
+
+Paper filing has become much less common--see the [requirements for filing on paper.](https://www.fec.gov/help-candidates-and-committees/filing-reports/electronic-filing/)
 
 Overall this process is very similar to dealing with the electronic filings, but amendments are more complex because A. they can be either full or partial replacements, although there's no indication given in the filing as to which they are and B. there's no listing of the "original" filing being fixed. 
 
@@ -112,7 +117,8 @@ Filings that are not superseded by a later amendment are included, whereas those
 
 ### 5. Read most recent filings 
 
-Read the most recent filings from step 4's output. 
+Read the most recent filings from step 4's output, but first set the years to process in read_filings_from_amended_headers.py. 
+These restrict the transaction date to a specified time window, and are required to keep out duplicates from later amendments. 
 
 `$python read_paper_filings_from_amended_headers.py`
 
