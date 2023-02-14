@@ -19,9 +19,11 @@ You may want to set the following variables in a local\_settings.py file, which 
 
 ### 1. Get zipped electronic .fec files 
 
-`$ python get_daily_filings.py`
+`$ nohup python get_daily_filings.py &`
 
-retrieves the zipfiles that are listed in the metadata/electronic\_zipfiles.txt (or set in settings.ELECTRONIC\_ZIPFILE\_MANIFEST). This may take a while; you may want to run it as `nohup  python get_daily_filings.py &` to detach from the process on linux and make sure it keeps running if your connection goes. 
+Retrieves the zipfiles that are listed in the metadata/electronic\_zipfiles.txt (or set in settings.ELECTRONIC\_ZIPFILE\_MANIFEST). 
+
+This may take a while; using `nohup  python get_daily_filings.py` allows the process to continue on the server if our connection dies; the `&` detaches the terminal from the window. You can see the output in `nohup.out` as it runs with `tail -f nohup.out`.
 
 Because there are some random names it's often easier to just grab this from the live ftp site and paste it into the manifest file. 
 
@@ -31,13 +33,14 @@ The zipfile source is [here](https://cg-519a459a-0ea3-42c2-b7bc-fa1143481f74.s3-
 
 ### 2. Unzip the files
 
-`$ python unzip_filings.py`
+`$ nohup python unzip_filings.py &`
 
-This just executes the unzip command using an old school os.system call, there's doubtless a better approach to this. 
+This just executes the unzip command using an old school os.system call, there's doubtless a better approach to this. This takes up a lotta space; over 100GB for the 21/22 cycle.
 
 ### 3. Extract the headers
+set the START_YEAR = DDDD in process_filing_headers.py before we run it, below. 
 
-`$ python process_filing_headers.py`
+`$nohup python process_filing_headers.py &`
 
 Writes a .csv file to settings.HEADER\_DUMP\_FILE, by default headers/headers\_raw.csv. 
 
