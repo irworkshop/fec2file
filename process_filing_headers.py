@@ -6,7 +6,7 @@ import sys
 
 from settings import RAW_ELECTRONIC_DIR, MASTER_HEADER_ROW, HEADER_DUMP_FILE
 
-START_YEAR = 2019
+START_YEAR = 2021
 
 ERROR_HEADERS = ['path', 'error', ]
 
