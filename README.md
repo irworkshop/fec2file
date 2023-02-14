@@ -117,7 +117,8 @@ Filings that are not superseded by a later amendment are included, whereas those
 
 ### 5. Read most recent filings 
 
-Read the most recent filings from step 4's output. 
+Read the most recent filings from step 4's output, but first set the years to process in read_filings_from_amended_headers.py. 
+These restrict the transaction date to a specified time window, and are required to keep out duplicates from later amendments. 
 
 `$python read_paper_filings_from_amended_headers.py`
 
