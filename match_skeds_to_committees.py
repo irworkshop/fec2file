@@ -13,8 +13,11 @@ import settings
 
 
 
-COMMITTEE_FILES = ['data/22/cm.txt', 'data/20/cm.txt', 'data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
-CANDIDATE_FILES = ['data/22/cn.txt', 'data/20/cn.txt', 'data/18/cn.txt', 'data/16/cn.txt', 'data/14/cn.txt', 'data/12/cn.txt', 'data/10/cn.txt', 'data/08/cn.txt']
+# FEC per-cycle committee/candidate masters, from
+# https://www.fec.gov/files/bulk-downloads/<YYYY>/cm<YY>.zip and cn<YY>.zip (cm.txt / cn.txt inside).
+# Lookups key on the transaction date's cycle, so a cycle missing here leaves those rows unannotated.
+COMMITTEE_FILES = ['data/26/cm.txt', 'data/24/cm.txt', 'data/22/cm.txt', 'data/20/cm.txt', 'data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
+CANDIDATE_FILES = ['data/26/cn.txt', 'data/24/cn.txt', 'data/22/cn.txt', 'data/20/cn.txt', 'data/18/cn.txt', 'data/16/cn.txt', 'data/14/cn.txt', 'data/12/cn.txt', 'data/10/cn.txt', 'data/08/cn.txt']
 
 SKEDA_PROCESSED = settings.SCHEDULE_A_OUTFILE 
 SKEDA_OUTFILE = SKEDA_PROCESSED.replace(".csv", "_annotated.csv")
@@ -244,7 +247,8 @@ if __name__ == '__main__':
     # YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
     #YEARS = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
-    YEARS = [2021, 2022, 2023]
+    # must match read_filings_from_amended_headers.YEARS
+    YEARS = [2024, 2025, 2026]
 
     for year in YEARS: 
         process_sked_a(committeedict, candidatedict, year)
