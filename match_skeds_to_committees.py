@@ -3,6 +3,14 @@
 import csv
 import settings
 
+# encoding and newline are explicit on every csv open. Two reasons:
+#  - encoding: the .fec sources are read as ISO-8859-1, so non-ASCII names reach
+#    these writers as text. Without an explicit encoding the output depends on the
+#    machine's locale, and the Django mapping for datasets 62/63 declares utf-8.
+#  - newline='': csv mis-handles newlines embedded in quoted fields without it
+#    (see the csv module docs). Committee names and comments do contain them --
+#    headers_raw.csv held 455 such rows on the Sept 2026 run.
+
 
 
 COMMITTEE_FILES = ['data/22/cm.txt', 'data/20/cm.txt', 'data/18/cm.txt', 'data/16/cm.txt', 'data/14/cm.txt', 'data/12/cm.txt', 'data/10/cm.txt', 'data/08/cm.txt']
@@ -49,7 +57,7 @@ def get_committee_dict():
     i=0
     for committee_file in COMMITTEE_FILES:
         year = committee_file.split("/")[1]
-        infile = open(committee_file, 'r')
+        infile = open(committee_file, 'r', encoding='utf-8', newline='')
         
         while True:
             i+=1
@@ -80,7 +88,7 @@ def get_candidate_dict():
     i=0
     for candidate_file in CANDIDATE_FILES:
         year = candidate_file.split("/")[1]
-        infile = open(candidate_file, 'r')
+        infile = open(candidate_file, 'r', encoding='utf-8', newline='')
         
         while True:
             i+=1
@@ -101,11 +109,11 @@ def get_candidate_dict():
 
 def process_sked_a(committeedict, candidatedict,  year):
 
-    f = open(SKEDA_OUTFILE % year, 'w')
+    f = open(SKEDA_OUTFILE % year, 'w', encoding='utf-8', newline='')
     dw = csv.DictWriter(f, fieldnames=SKEDA_RESULT_HEADERS)
     dw.writeheader()
 
-    infile = open(SKEDA_PROCESSED % year, 'r')
+    infile = open(SKEDA_PROCESSED % year, 'r', encoding='utf-8', newline='')
     reader = csv.DictReader(infile)
 
     for (i,row) in enumerate(reader):
@@ -165,11 +173,11 @@ def process_sked_a(committeedict, candidatedict,  year):
         dw.writerow(row)
 
 def process_sked_b(committeedict, candidatedict, year):
-    f = open(SKEDB_OUTFILE % year, 'w')
+    f = open(SKEDB_OUTFILE % year, 'w', encoding='utf-8', newline='')
     dw = csv.DictWriter(f, fieldnames=SKEDB_RESULT_HEADERS)
     dw.writeheader()
 
-    infile = open(SKEDB_PROCESSED % year, 'r')
+    infile = open(SKEDB_PROCESSED % year, 'r', encoding='utf-8', newline='')
     reader = csv.DictReader(infile)
 
     for (i,row) in enumerate(reader):

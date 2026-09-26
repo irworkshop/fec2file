@@ -6,7 +6,19 @@ import sys
 
 from settings import RAW_ELECTRONIC_DIR, MASTER_HEADER_ROW, HEADER_DUMP_FILE
 
-START_YEAR = 2021
+# encoding and newline are explicit on every csv open. Two reasons:
+#  - encoding: the .fec sources are read as ISO-8859-1, so non-ASCII names reach
+#    these writers as text. Without an explicit encoding the output depends on the
+#    machine's locale, and the Django mapping for datasets 62/63 declares utf-8.
+#  - newline='': csv mis-handles newlines embedded in quoted fields without it
+#    (see the csv module docs). Committee names and comments do contain them --
+#    headers_raw.csv held 455 such rows on the Sept 2026 run.
+
+# Directories older than this are skipped. Compares against the first 4 chars of
+# the dated directory name, so it is a filing-date filter, unlike YEARS in
+# read_filings_from_amended_headers.py which filters on coverage period. Harmless
+# to leave wider than the manifest -- there simply are no older directories.
+START_YEAR = 2024
 
 ERROR_HEADERS = ['path', 'error', ]
 
@@ -53,12 +65,12 @@ def readfile(filepath, writer):
 if __name__ == '__main__':
 
 
-    outfile =  open(HEADER_DUMP_FILE, 'w')
+    outfile =  open(HEADER_DUMP_FILE, 'w', encoding='utf-8', newline='')
     dw = csv.DictWriter(outfile, fieldnames=MASTER_HEADER_ROW, extrasaction='ignore')
     dw.writeheader()
     print("Writing output to %s" % HEADER_DUMP_FILE)
 
-    errorfile = open("header_read_errors.csv", 'w')
+    errorfile = open("header_read_errors.csv", 'w', encoding='utf-8', newline='')
     error_writer = csv.DictWriter(errorfile, fieldnames=ERROR_HEADERS, extrasaction='ignore')
     error_writer.writeheader()
 

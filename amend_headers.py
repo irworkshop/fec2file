@@ -3,6 +3,14 @@ import csv
 from settings import *
 from collections import OrderedDict
 
+# encoding and newline are explicit on every csv open. Two reasons:
+#  - encoding: the .fec sources are read as ISO-8859-1, so non-ASCII names reach
+#    these writers as text. Without an explicit encoding the output depends on the
+#    machine's locale, and the Django mapping for datasets 62/63 declares utf-8.
+#  - newline='': csv mis-handles newlines embedded in quoted fields without it
+#    (see the csv module docs). Committee names and comments do contain them --
+#    headers_raw.csv held 455 such rows on the Sept 2026 run.
+
 ## this actually shouldn't be an ordered dict
 ## because it's only ordered by day in the original
 ## and so should be sorted by numeric filing number
@@ -12,14 +20,14 @@ from collections import OrderedDict
 infilepath = HEADER_DUMP_FILE
 
 outfileheaders = ['filing_number', 'is_superseded', 'amended_by', 'last_amendment', 'report_number', 'filer_committee_id_number', 'form_type', 'date_signed', 'coverage_from_date', 'coverage_through_date', 'comment']
-outfile =  open(AMENDED_HEADER_FILE, 'w')
+outfile =  open(AMENDED_HEADER_FILE, 'w', encoding='utf-8', newline='')
 writer = csv.DictWriter(outfile, fieldnames=outfileheaders, extrasaction='ignore')
 writer.writeheader()
 
 
 filing_amendment_dict = {}
 
-with open(infilepath, 'r') as infile:
+with open(infilepath, 'r', encoding='utf-8', newline='') as infile:
     dw = csv.DictReader(infile)
 
 

@@ -12,6 +12,14 @@ import fecfile
 from schedule_headers import *
 from settings import SCHEDULE_A_OUTFILE, SCHEDULE_B_OUTFILE, SCHEDULE_F132_OUTFILE
 
+# encoding and newline are explicit on every csv open. Two reasons:
+#  - encoding: the .fec sources are read as ISO-8859-1, so non-ASCII names reach
+#    these writers as text. Without an explicit encoding the output depends on the
+#    machine's locale, and the Django mapping for datasets 62/63 declares utf-8.
+#  - newline='': csv mis-handles newlines embedded in quoted fields without it
+#    (see the csv module docs). Committee names and comments do contain them --
+#    headers_raw.csv held 455 such rows on the Sept 2026 run.
+
 # process these
 main_forms = ['F3X', 'F3', 'F3P', 'F13']
 
@@ -40,7 +48,16 @@ legal_skeds = ['A', 'B','F132']
 # To really do sked E we gotta include F57, from the F5's
 
 #ALL_YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
-YEARS = [2021, 2022, 2023]
+
+# Which coverage years to emit. A writer is only created for years in this list
+# (see the writer setup below), and a filing is only queued for processing if the
+# year derived from its coverage_from_date appears here -- so a year that is
+# missing produces no output at all, silently, rather than an error.
+#
+# Note this buckets by the filing's COVERAGE period, not by when it was filed.
+# An amendment to a 2023 report carries the original's coverage dates, so it lands
+# in 2023 and is correctly excluded from a 2024-onward run.
+YEARS = [2024, 2025, 2026]
 
 
 schedule_writer = {
@@ -136,7 +153,7 @@ if __name__ == '__main__':
     live_filing_list = {}
     start = datetime.now()
     print("Building a hash of files to process... ")
-    reader = csv.DictReader(open(AMENDED_HEADER_FILE, 'r'))
+    reader = csv.DictReader(open(AMENDED_HEADER_FILE, 'r', encoding='utf-8', newline=''))
     count = {}
     max = 0
     included = 0
@@ -182,7 +199,7 @@ if __name__ == '__main__':
 
             schedule_writer[sked][year] = {}
             
-            schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w'), fieldnames=headers, extrasaction='ignore')
+            schedule_writer[sked][year]['writer'] = csv.DictWriter(open(outfile, 'w', encoding='utf-8', newline=''), fieldnames=headers, extrasaction='ignore')
             schedule_writer[sked][year]['writer'].writeheader()
 
 
