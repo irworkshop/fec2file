@@ -1,0 +1,6 @@
+# Version 0.8 
+fecfile>=0.9.1
+
+# Used by get_daily_filings.py / get_daily_paper_filings.py to fetch the FEC's
+# daily bulk zips, and by get_filings_from_api.py.
+requests>=2.28
