@@ -1,6 +1,10 @@
 """ the raw contribution files only give an id for the committee name; match them to the committee file. """
 
+import argparse
 import csv
+import sys
+from multiprocessing import Pool
+
 import settings
 
 # encoding and newline are explicit on every csv open. Two reasons:
@@ -175,6 +179,9 @@ def process_sked_a(committeedict, candidatedict,  year):
 
         dw.writerow(row)
 
+    infile.close()
+    f.close()
+
 def process_sked_b(committeedict, candidatedict, year):
     f = open(SKEDB_OUTFILE % year, 'w', encoding='utf-8', newline='')
     dw = csv.DictWriter(f, fieldnames=SKEDB_RESULT_HEADERS)
@@ -239,21 +246,56 @@ def process_sked_b(committeedict, candidatedict, year):
         
         dw.writerow(row)
 
+    infile.close()
+    f.close()
+
+# must match read_filings_from_amended_headers.YEARS
+YEARS = [2024, 2025, 2026]
+
+PROCESSORS = {'A': process_sked_a, 'B': process_sked_b}
+
+
+def run_job(job):
+    """ Annotate one schedule-year, e.g. ('B', 2024). Each job builds its own
+    lookups (a few seconds) and logs to <output>.log, since the per-row "missing"
+    lines from parallel jobs would be unattributable in one shared stream. """
+    sked, year = job
+    outfile = (SKEDA_OUTFILE if sked == 'A' else SKEDB_OUTFILE) % year
+    logpath = outfile.replace('.csv', '.log')
+    with open(logpath, 'w') as log:
+        sys.stdout = log
+        committeedict = get_committee_dict()
+        candidatedict = get_candidate_dict()
+        PROCESSORS[sked](committeedict, candidatedict, year)
+        sys.stdout = sys.__stdout__
+    return "%s-%s done, log in %s" % (sked, year, logpath)
+
+
+def parse_job(text):
+    try:
+        sked, year = text.upper().split(':')
+        if sked not in PROCESSORS:
+            raise ValueError
+        return (sked, int(year))
+    except ValueError:
+        raise argparse.ArgumentTypeError("expected SKED:YEAR like A:2024 or B:2026, got %r" % text)
+
+
 if __name__ == '__main__':
-    
-    committeedict = get_committee_dict()
-    candidatedict = get_candidate_dict()
+    parser = argparse.ArgumentParser(description="Annotate schedule csvs with committee/candidate names. "
+        "Each SKED:YEAR is independent, so they can run in parallel.")
+    parser.add_argument('jobs', nargs='*', type=parse_job,
+        help="SKED:YEAR pairs, e.g. B:2024 A:2025. Default: A and B for every year in YEARS.")
+    parser.add_argument('-w', '--workers', type=int, default=1,
+        help="parallel processes; each uses ~1 core and ~200 MB. Default 1 (sequential).")
+    args = parser.parse_args()
 
-    # YEARS = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
+    jobs = args.jobs or [(sked, year) for year in YEARS for sked in ('A', 'B')]
+    print("Running %s job(s) with %s worker(s): %s" % (len(jobs), args.workers, jobs), flush=True)
 
-    #YEARS = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
-    # must match read_filings_from_amended_headers.YEARS
-    YEARS = [2024, 2025, 2026]
-
-    for year in YEARS: 
-        process_sked_a(committeedict, candidatedict, year)
-        process_sked_b(committeedict, candidatedict, year)
-        # TK F132.
-
-    
-
+    # maxtasksperchild=1: a fresh process per job, so no lookup dicts or stdout
+    # redirection carry over between jobs.
+    with Pool(args.workers, maxtasksperchild=1) as pool:
+        for result in pool.imap_unordered(run_job, jobs):
+            print(result, flush=True)
+    # TK F132.
